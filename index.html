@@ -3,9 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Исторический атлас</title>
+    <title>Исторический атлас | Главная</title>
     <style>
-        /* Основные стили */
+        /* Базовые стили */
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #e74c3c;
+            --accent-color: #3498db;
+            --text-light: #ecf0f1;
+            --text-dark: #2c3e50;
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -14,140 +22,343 @@
         }
         
         body {
-            background-color: #f5f5f5;
-            color: #333;
+            background: linear-gradient(-45deg, #f5f5f5, #e0e0e0, #f0f0f0, #e5e5e5);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            color: var(--text-dark);
             line-height: 1.6;
+            overflow-x: hidden;
         }
-        
-        /* Шапка с фоновым изображением */
+
+        /* Анимации */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes breathe {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes textShine {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes rotate3d {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+
+        /* Шапка с параллакс-эффектом */
         header {
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
                         url('https://images.unsplash.com/photo-1467269204594-9661b134dd2b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
             background-size: cover;
+            background-attachment: fixed;
             background-position: center;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
             padding: 0 20px;
-            color: white;
+            color: var(--text-light);
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 1.5s ease-out;
         }
-        
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(transparent, var(--primary-color));
+            z-index: 1;
+        }
+
+        /* Анимированный заголовок */
         h1 {
-            font-size: 3.5rem;
+            font-size: 4rem;
             margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            animation: fadeIn 2s ease-in-out;
+            background: linear-gradient(90deg, #ff8a00, #e52e71, #2575fc);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: textShine 3s linear infinite, breathe 6s ease-in-out infinite;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 2;
         }
-        
+
+        /* Описание с эффектом появления */
         .description {
             max-width: 800px;
-            font-size: 1.2rem;
-            margin-bottom: 40px;
-            animation: fadeIn 2.5s ease-in-out;
+            font-size: 1.3rem;
+            margin-bottom: 50px;
+            opacity: 0;
+            animation: fadeIn 1.5s ease-out 0.5s forwards;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 2;
         }
-        
-        /* Стили для навигационных карточек */
+
+        /* Контейнер навигационных карточек */
         .nav-cards {
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
             gap: 30px;
             padding: 0 20px;
-            animation: fadeIn 3s ease-in-out;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 1s forwards;
+            position: relative;
+            z-index: 2;
+            perspective: 1000px;
         }
-        
+
+        /* 3D-карточки с анимацией */
         .card {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            width: 220px;
-            padding: 25px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            width: 250px;
+            padding: 30px;
             text-align: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            color: #333;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transform-style: preserve-3d;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards, float 6s ease-in-out infinite 2s;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            color: var(--text-dark);
             text-decoration: none;
         }
-        
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0.3),
+                rgba(255, 255, 255, 0)
+            );
+            transform: rotate(30deg);
+            transition: all 0.5s ease;
         }
-        
+
+        .card:hover {
+            transform: translateY(-15px) rotateX(10deg) scale(1.03);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .card:hover::before {
+            transform: rotate(30deg) translate(20%, 20%);
+        }
+
         .card img {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             object-fit: cover;
             border-radius: 50%;
-            margin-bottom: 15px;
-            border: 3px solid #fff;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+            border: 4px solid white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.5s ease;
+            animation: pulse 3s ease-in-out infinite;
         }
-        
+
+        .card:hover img {
+            transform: scale(1.1) rotate(5deg);
+            animation: none;
+        }
+
         .card h2 {
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-            color: #2c3e50;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            position: relative;
+            transition: all 0.3s ease;
         }
-        
-        /* Анимации */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        .card:hover h2 {
+            color: var(--secondary-color);
         }
-        
-        /* Подвал */
+
+        .card p {
+            font-size: 1rem;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover p {
+            color: #333;
+        }
+
+        /* Индивидуальные задержки для карточек */
+        .card:nth-child(1) { animation-delay: 0.8s; }
+        .card:nth-child(2) { animation-delay: 1s; }
+        .card:nth-child(3) { animation-delay: 1.2s; }
+        .card:nth-child(4) { animation-delay: 1.4s; }
+
+        /* Анимированный подвал */
         footer {
             text-align: center;
-            padding: 20px;
-            background: #2c3e50;
+            padding: 25px;
+            background: var(--primary-color);
             color: white;
-            position: fixed;
-            bottom: 0;
+            position: relative;
+            z-index: 2;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 2s forwards;
+        }
+
+        /* Эффект подчеркивания для ссылок */
+        .underline-effect {
+            position: relative;
+            display: inline-block;
+        }
+
+        .underline-effect::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--accent-color);
+            transition: width 0.4s ease, left 0.4s ease;
+        }
+
+        .underline-effect:hover::after {
             width: 100%;
+            left: 0;
+        }
+
+        /* Адаптация для мобильных */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .description {
+                font-size: 1.1rem;
+            }
+            
+            .nav-cards {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .card {
+                width: 90%;
+                max-width: 300px;
+            }
+            
+            @keyframes float {
+                0% { transform: translateY(0px); }
+                50% { transform: translateY(-5px); }
+                100% { transform: translateY(0px); }
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Исторический атлас</h1>
+        <h1 class="underline-effect">Исторический атлас</h1>
         <p class="description">
-            Исследуйте мир через призму истории. Наш проект объединяет древние карты, 
-            места знаменитых сражений, величественные горные системы и важнейшие водные пути, 
-            которые формировали ход цивилизации.
+            Погрузитесь в увлекательное путешествие сквозь века. Наш интерактивный архив объединяет 
+            уникальные материалы по истории географии, военному делу и природным ландшафтам, 
+            которые формировали облик цивилизаций.
         </p>
         
         <div class="nav-cards">
             <a href="maps.html" class="card">
-                <img src="https://images.unsplash.com/photo-1476231682828-37e571bc172f?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="Карты">
-                <h2>Карты</h2>
-                <p>Исторические карты разных эпох</p>
+                <img src="https://images.unsplash.com/photo-1476231682828-37e571bc172f?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="Карты">
+                <h2>Исторические карты</h2>
+                <p>От античных свитков до современных реконструкций</p>
             </a>
             
             <a href="battles.html" class="card">
-                <img src="https://images.unsplash.com/photo-1543351611-58f69d7c1781?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="Битвы">
-                <h2>Битвы</h2>
-                <p>Знаменитые сражения истории</p>
+                <img src="https://images.unsplash.com/photo-1543351611-58f69d7c1781?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="Битвы">
+                <h2>Великие битвы</h2>
+                <p>Решающие сражения, изменившие ход истории</p>
             </a>
             
             <a href="mountains.html" class="card">
-                <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="Горы">
-                <h2>Горы</h2>
-                <p>Великие горные системы мира</p>
+                <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="Горы">
+                <h2>Горные системы</h2>
+                <p>Как геология влияла на развитие цивилизаций</p>
             </a>
             
             <a href="water.html" class="card">
-                <img src="https://images.unsplash.com/photo-1509316785289-025f5b846b35?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="Водоемы">
-                <h2>Водоемы</h2>
-                <p>Реки, озера и моря в истории</p>
+                <img src="https://images.unsplash.com/photo-1509316785289-025f5b846b35?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="Водоемы">
+                <h2>Водные пути</h2>
+                <p>Реки и моря как транспортные артерии истории</p>
             </a>
         </div>
     </header>
     
     <footer>
-        © 2023 Исторический атлас | Все права защищены
+        <p>&copy; 2023 Исторический атлас | Проект создан с любовью к истории</p>
     </footer>
+
+    <script>
+        // Дополнительные JS-эффекты
+        document.addEventListener('DOMContentLoaded', () => {
+            // Анимация при скролле
+            const cards = document.querySelectorAll('.card');
+            
+            const animateOnScroll = () => {
+                cards.forEach(card => {
+                    const cardPosition = card.getBoundingClientRect().top;
+                    const screenPosition = window.innerHeight / 1.3;
+                    
+                    if(cardPosition < screenPosition) {
+                        card.style.animationPlayState = 'running';
+                    }
+                });
+            };
+            
+            window.addEventListener('scroll', animateOnScroll);
+            animateOnScroll(); // Инициализация при загрузке
+            
+            // Случайное колебание карточек
+            cards.forEach((card, index) => {
+                card.style.setProperty('--delay', `${index * 0.1}s`);
+                card.style.animationDelay = `calc(0.5s + var(--delay))`;
+            });
+        });
+    </script>
 </body>
 </html>
