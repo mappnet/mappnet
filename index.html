@@ -1,35 +1,153 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Исторические карты</title>
-  <link rel="stylesheet" href="css/style.css">
-  <!-- Подключите Leaflet для карт (если нужно) -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Исторический атлас</title>
+    <style>
+        /* Основные стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Georgia', serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* Шапка с фоновым изображением */
+        header {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                        url('https://images.unsplash.com/photo-1467269204594-9661b134dd2b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            color: white;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 2s ease-in-out;
+        }
+        
+        .description {
+            max-width: 800px;
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            animation: fadeIn 2.5s ease-in-out;
+        }
+        
+        /* Стили для навигационных карточек */
+        .nav-cards {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            padding: 0 20px;
+            animation: fadeIn 3s ease-in-out;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            width: 220px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            color: #333;
+            text-decoration: none;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 15px;
+            border: 3px solid #fff;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card h2 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Подвал */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #2c3e50;
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>MapCatalog</h1>
-    <div class="search">
-      <input type="text" id="search-input" placeholder="Поиск по тегам...">
-      <button id="search-btn">Найти</button>
-    </div>
-  </header>
-
-  <main>
-    <div id="map-container">
-      <!-- Здесь будет карта (если используете Leaflet) -->
-    </div>
-    <div id="cards-list">
-      <!-- Карточки с превью карт будут здесь -->
-    </div>
-  </main>
-
-  <!-- Подключите Firebase и скрипты -->
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
-  <script src="js/config.js"></script>
-  <script src="js/app.js"></script>
+    <header>
+        <h1>Исторический атлас</h1>
+        <p class="description">
+            Исследуйте мир через призму истории. Наш проект объединяет древние карты, 
+            места знаменитых сражений, величественные горные системы и важнейшие водные пути, 
+            которые формировали ход цивилизации.
+        </p>
+        
+        <div class="nav-cards">
+            <a href="maps.html" class="card">
+                <img src="https://images.unsplash.com/photo-1476231682828-37e571bc172f?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="Карты">
+                <h2>Карты</h2>
+                <p>Исторические карты разных эпох</p>
+            </a>
+            
+            <a href="battles.html" class="card">
+                <img src="https://images.unsplash.com/photo-1543351611-58f69d7c1781?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="Битвы">
+                <h2>Битвы</h2>
+                <p>Знаменитые сражения истории</p>
+            </a>
+            
+            <a href="mountains.html" class="card">
+                <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="Горы">
+                <h2>Горы</h2>
+                <p>Великие горные системы мира</p>
+            </a>
+            
+            <a href="water.html" class="card">
+                <img src="https://images.unsplash.com/photo-1509316785289-025f5b846b35?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="Водоемы">
+                <h2>Водоемы</h2>
+                <p>Реки, озера и моря в истории</p>
+            </a>
+        </div>
+    </header>
+    
+    <footer>
+        © 2023 Исторический атлас | Все права защищены
+    </footer>
 </body>
 </html>
