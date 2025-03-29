@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Исторические карты</title>
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Подключите Leaflet для карт (если нужно) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+  <header>
+    <h1>MapCatalog</h1>
+    <div class="search">
+      <input type="text" id="search-input" placeholder="Поиск по тегам...">
+      <button id="search-btn">Найти</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="map-container">
+      <!-- Здесь будет карта (если используете Leaflet) -->
+    </div>
+    <div id="cards-list">
+      <!-- Карточки с превью карт будут здесь -->
+    </div>
+  </main>
+
+  <!-- Подключите Firebase и скрипты -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
