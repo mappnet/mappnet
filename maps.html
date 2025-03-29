@@ -34,7 +34,7 @@
                         url('https://get.wallhere.com/photo/landscape-sea-hill-lake-nature-reflection-national-park-fjord-valley-mountain-pass-wilderness-Alps-plateau-ridge-Terrain-cloud-mountain-adventure-loch-atmospheric-phenomenon-mountainous-landforms-landform-geographical-feature-aerial-photography-mountain-range-fell-285730.jpg');
             background-size: cover;
             background-position: center;
-            background-attachment: scroll; /* Убрали фиксированный фон */
+            background-attachment: scroll;
             padding: 2rem 1rem;
             text-align: center;
             color: var(--text-light);
@@ -87,6 +87,8 @@
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
         
         .map-card:hover {
@@ -108,6 +110,9 @@
         
         .map-card-content {
             padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
         
         .map-card h2 {
@@ -125,6 +130,7 @@
             color: #666;
             margin-bottom: 1rem;
             font-size: 0.95rem;
+            flex-grow: 1;
         }
         
         .map-link {
@@ -136,6 +142,8 @@
             border-radius: 4px;
             font-weight: bold;
             transition: all 0.3s ease;
+            text-align: center;
+            margin-top: auto;
         }
         
         .map-link:hover {
@@ -160,13 +168,6 @@
         
         footer a:hover {
             color: var(--accent-color);
-        }
-        
-        /* Анимации */
-        @keyframes quickPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
         }
         
         /* Анимация появления элементов */
@@ -212,7 +213,29 @@
             background: #f0f4f8;
             padding: 1.5rem;
             border-radius: 8px;
-            animation: quickPulse 2s infinite;
+        }
+        
+        .info-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .info-link {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .info-link:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
         }
         
         /* Адаптация */
@@ -225,8 +248,8 @@
                 font-size: 2rem;
             }
             
-            .info-block {
-                animation: quickPulse 3s infinite;
+            .info-links {
+                flex-direction: column;
             }
         }
     </style>
@@ -248,7 +271,7 @@
                     <div class="map-card-content">
                         <h2>Физические карты</h2>
                         <p>Отображают природные ландшафты: горы, реки, равнины и другие географические объекты. Показывают рельеф местности с помощью цветовых градиентов.</p>
-                        <a href="physical-maps.html" class="map-link">Просмотреть</a>
+                        <a href="physical-maps.html" class="map-link">Посмотреть</a>
                     </div>
                 </div>
                 
@@ -258,7 +281,7 @@
                     <div class="map-card-content">
                         <h2>Политические карты</h2>
                         <p>Показывают государственные границы, административное деление, столицы и крупные города. Отлично подходят для изучения исторических изменений территорий.</p>
-                        <a href="political-maps.html" class="map-link">Просмотреть</a>
+                        <a href="political-maps.html" class="map-link">Посмотреть</a>
                     </div>
                 </div>
                 
@@ -268,7 +291,7 @@
                     <div class="map-card-content">
                         <h2>Экономические карты</h2>
                         <p>Демонстрируют распределение ресурсов, промышленных объектов, транспортных сетей и экономических зон. Полезны для анализа хозяйственной деятельности.</p>
-                        <a href="economic-maps.html" class="map-link">Просмотреть</a>
+                        <a href="economic-maps.html" class="map-link">Посмотреть</a>
                     </div>
                 </div>
                 
@@ -278,7 +301,7 @@
                     <div class="map-card-content">
                         <h2>Этнические карты</h2>
                         <p>Отображают расселение народов, языковые группы и культурные ареалы. Позволяют изучать историю миграций и культурные взаимодействия.</p>
-                        <a href="ethnic-maps.html" class="map-link">Просмотреть</a>
+                        <a href="ethnic-maps.html" class="map-link">Посмотреть</a>
                     </div>
                 </div>
             </div>
@@ -290,12 +313,12 @@
             
             <div class="info-block">
                 <h3>Как работать с картами?</h3>
-                <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                    <li style="margin-bottom: 0.5rem;">Нажмите на интересующий тип карт для просмотра коллекции</li>
-                    <li style="margin-bottom: 0.5rem;">Используйте фильтр, чтобы получить необходимые темы карт</li>
-                    <li style="margin-bottom: 0.5rem;">Кликните на карту для просмотра в высоком разрешении</li>
-                    <li>Скачивайте материалы для образовательных целей</li>
-                </ul>
+                <div class="info-links">
+                    <a href="physical-maps.html" class="info-link">Физические карты</a>
+                    <a href="political-maps.html" class="info-link">Политические карты</a>
+                    <a href="economic-maps.html" class="info-link">Экономические карты</a>
+                    <a href="ethnic-maps.html" class="info-link">Этнические карты</a>
+                </div>
             </div>
         </section>
     </main>
