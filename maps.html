@@ -215,69 +215,35 @@
             border-radius: 8px;
         }
         
-        .info-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
+        .map-guides {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
             margin-top: 1rem;
         }
         
-        .dropdown {
-            position: relative;
-            display: inline-block;
+        .guide-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
         }
         
-        .dropbtn {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: var(--secondary-color);
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            min-width: 160px;
-            text-align: center;
+        .guide-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.75rem;
+            font-size: 1.2rem;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
         }
         
-        .dropbtn:hover {
-            background: var(--accent-color);
-            transform: translateY(-2px);
+        .guide-card ul {
+            padding-left: 1.25rem;
+            color: #555;
         }
         
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: white;
-            min-width: 160px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-            z-index: 1;
-            border-radius: 4px;
-            overflow: hidden;
-            animation: fadeIn 0.3s ease-out;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .dropdown-content a {
-            color: var(--text-dark);
-            padding: 0.75rem 1rem;
-            text-decoration: none;
-            display: block;
-            transition: background-color 0.3s ease;
-        }
-        
-        .dropdown-content a:hover {
-            background-color: #f0f4f8;
-        }
-        
-        .dropdown:hover .dropdown-content {
-            display: block;
+        .guide-card li {
+            margin-bottom: 0.5rem;
         }
         
         /* Адаптация */
@@ -290,14 +256,8 @@
                 font-size: 2rem;
             }
             
-            .info-links {
-                flex-direction: column;
-            }
-            
-            .dropdown-content {
-                position: static;
-                box-shadow: none;
-                border: 1px solid #ddd;
+            .map-guides {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -361,45 +321,41 @@
             
             <div class="info-block">
                 <h3>Как работать с картами?</h3>
-                <div class="info-links">
-                    <div class="dropdown">
-                        <button class="dropbtn">Физические карты</button>
-                        <div class="dropdown-content">
-                            <a href="physical-maps.html">Просмотреть коллекцию</a>
-                            <a href="#">Скачать в PDF</a>
-                            <a href="#">Сравнить с другими</a>
-                            <a href="#">Поделиться</a>
-                        </div>
+                <div class="map-guides">
+                    <div class="guide-card">
+                        <h4>Физические карты</h4>
+                        <ul>
+                            <li>Используйте цветовую легенду для определения высот</li>
+                            <li>Обращайте внимание на изолинии для понимания рельефа</li>
+                            <li>Сравнивайте карты разных периодов для изучения изменений ландшафта</li>
+                        </ul>
                     </div>
                     
-                    <div class="dropdown">
-                        <button class="dropbtn">Политические карты</button>
-                        <div class="dropdown-content">
-                            <a href="political-maps.html">Просмотреть коллекцию</a>
-                            <a href="#">Скачать в PDF</a>
-                            <a href="#">Сравнить с другими</a>
-                            <a href="#">Поделиться</a>
-                        </div>
+                    <div class="guide-card">
+                        <h4>Политические карты</h4>
+                        <ul>
+                            <li>Анализируйте изменения границ государств</li>
+                            <li>Изучайте административное деление регионов</li>
+                            <li>Сравнивайте карты разных исторических периодов</li>
+                        </ul>
                     </div>
                     
-                    <div class="dropdown">
-                        <button class="dropbtn">Экономические карты</button>
-                        <div class="dropdown-content">
-                            <a href="economic-maps.html">Просмотреть коллекцию</a>
-                            <a href="#">Скачать в PDF</a>
-                            <a href="#">Сравнить с другими</a>
-                            <a href="#">Поделиться</a>
-                        </div>
+                    <div class="guide-card">
+                        <h4>Экономические карты</h4>
+                        <ul>
+                            <li>Изучайте распределение природных ресурсов</li>
+                            <li>Анализируйте транспортные сети и логистические узлы</li>
+                            <li>Сравнивайте экономические показатели регионов</li>
+                        </ul>
                     </div>
                     
-                    <div class="dropdown">
-                        <button class="dropbtn">Этнические карты</button>
-                        <div class="dropdown-content">
-                            <a href="ethnic-maps.html">Просмотреть коллекцию</a>
-                            <a href="#">Скачать в PDF</a>
-                            <a href="#">Сравнить с другими</a>
-                            <a href="#">Поделиться</a>
-                        </div>
+                    <div class="guide-card">
+                        <h4>Этнические карты</h4>
+                        <ul>
+                            <li>Изучайте расселение народов и языковых групп</li>
+                            <li>Анализируйте изменения этнического состава</li>
+                            <li>Сравнивайте культурные ареалы разных периодов</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -422,18 +378,6 @@
             images.forEach(img => {
                 if (img.complete) {
                     img.classList.add('loaded');
-                }
-            });
-            
-            // Закрытие выпадающих списков при клике вне их
-            document.addEventListener('click', function(event) {
-                if (!event.target.matches('.dropbtn')) {
-                    const dropdowns = document.querySelectorAll('.dropdown-content');
-                    dropdowns.forEach(dropdown => {
-                        if (dropdown.style.display === 'block') {
-                            dropdown.style.display = 'none';
-                        }
-                    });
                 }
             });
         });
