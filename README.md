@@ -1,2 +1,0 @@
-# mapcatalog
-Maps
