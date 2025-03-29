@@ -1,9 +1,0 @@
-/
-├── index.html
-├── css/
-│   └── style.css
-├── js/
-│   ├── app.js       # Работа с Firebase
-│   └── leaflet.js   # Карты
-└── data/
-    └── maps.json    # Метаданные
