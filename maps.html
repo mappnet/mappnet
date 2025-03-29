@@ -34,40 +34,17 @@
                         url('https://get.wallhere.com/photo/landscape-sea-hill-lake-nature-reflection-national-park-fjord-valley-mountain-pass-wilderness-Alps-plateau-ridge-Terrain-cloud-mountain-adventure-loch-atmospheric-phenomenon-mountainous-landforms-landform-geographical-feature-aerial-photography-mountain-range-fell-285730.jpg');
             background-size: cover;
             background-position: center;
+            background-attachment: scroll; /* Убрали фиксированный фон */
             padding: 2rem 1rem;
             text-align: center;
             color: var(--text-light);
             position: relative;
-            overflow: hidden;
-        }
-        
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, rgba(52, 152, 219, 0.2), rgba(231, 76, 60, 0.2));
-            z-index: 0;
-            animation: gradientShift 15s ease infinite;
-        }
-        
-        header > * {
-            position: relative;
-            z-index: 1;
         }
         
         h1 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-            animation: textGlow 3s ease-in-out infinite alternate;
-        }
-        
-        @keyframes textGlow {
-            0% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
-            100% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(52, 152, 219, 0.6); }
         }
         
         .back-link {
@@ -77,27 +54,11 @@
             text-decoration: none;
             font-weight: bold;
             transition: all 0.3s ease;
-            position: relative;
-        }
-        
-        .back-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background-color: var(--accent-color);
-            transition: width 0.3s ease;
         }
         
         .back-link:hover {
             color: var(--accent-color);
             transform: translateX(-5px);
-        }
-        
-        .back-link:hover::after {
-            width: 100%;
         }
         
         /* Основное содержимое */
@@ -113,24 +74,6 @@
             margin-bottom: 1.5rem;
         }
         
-        section h2::after {
-            content: '';
-            position: absolute;
-            width: 50%;
-            height: 3px;
-            bottom: -10px;
-            left: 0;
-            background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
-            border-radius: 3px;
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.5s ease;
-        }
-        
-        section:hover h2::after {
-            transform: scaleX(1);
-        }
-        
         .map-types {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -144,30 +87,11 @@
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            perspective: 1000px;
-            transform-style: preserve-3d;
-            position: relative;
-        }
-        
-        .map-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(231, 76, 60, 0.1));
-            opacity: 0;
-            transition: opacity 0.3s ease;
         }
         
         .map-card:hover {
-            transform: translateY(-10px) rotateX(5deg);
+            transform: translateY(-10px);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-        }
-        
-        .map-card:hover::before {
-            opacity: 1;
         }
         
         .map-card img {
@@ -175,17 +99,15 @@
             height: 180px;
             object-fit: cover;
             border-bottom: 3px solid var(--secondary-color);
-            transition: transform 0.5s ease, filter 0.3s ease;
+            transition: transform 0.5s ease;
         }
         
         .map-card:hover img {
             transform: scale(1.05);
-            filter: brightness(1.1);
         }
         
         .map-card-content {
             padding: 1.5rem;
-            transform: translateZ(30px);
         }
         
         .map-card h2 {
@@ -203,11 +125,6 @@
             color: #666;
             margin-bottom: 1rem;
             font-size: 0.95rem;
-            transition: color 0.3s ease;
-        }
-        
-        .map-card:hover p {
-            color: #444;
         }
         
         .map-link {
@@ -219,30 +136,11 @@
             border-radius: 4px;
             font-weight: bold;
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .map-link::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transform: rotate(45deg);
-            transition: all 0.5s ease;
         }
         
         .map-link:hover {
             background: var(--accent-color);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
-        }
-        
-        .map-link:hover::before {
-            left: 100%;
         }
         
         /* Подвал */
@@ -252,60 +150,22 @@
             text-align: center;
             padding: 1.5rem;
             margin-top: 3rem;
-            position: relative;
-        }
-        
-        footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
-            animation: rainbow 5s linear infinite;
         }
         
         footer a {
-            position: relative;
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
         }
         
-        footer a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 1px;
-            bottom: -2px;
-            left: 0;
-            background-color: var(--secondary-color);
-            transition: width 0.3s ease;
-        }
-        
-        footer a:hover::after {
-            width: 100%;
+        footer a:hover {
+            color: var(--accent-color);
         }
         
         /* Анимации */
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        @keyframes rainbow {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
-        }
-        
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-        
-        @keyframes pulse {
+        @keyframes quickPulse {
             0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            50% { transform: scale(1.02); }
             100% { transform: scale(1); }
         }
         
@@ -316,16 +176,8 @@
         }
         
         /* Применение анимаций */
-        header {
-            animation: fadeIn 1s ease-out;
-        }
-        
-        h1 {
-            animation: fadeIn 1s ease-out 0.3s both, breathe 6s ease-in-out infinite 1s;
-        }
-        
         .map-types {
-            animation: fadeInUp 0.8s ease-out 0.5s both;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
         }
         
         .map-card {
@@ -333,30 +185,34 @@
             opacity: 0;
         }
         
-        .map-card:nth-child(1) { animation-delay: 0.6s; }
-        .map-card:nth-child(2) { animation-delay: 0.8s; }
-        .map-card:nth-child(3) { animation-delay: 1s; }
-        .map-card:nth-child(4) { animation-delay: 1.2s; }
+        .map-card:nth-child(1) { animation-delay: 0.4s; }
+        .map-card:nth-child(2) { animation-delay: 0.5s; }
+        .map-card:nth-child(3) { animation-delay: 0.6s; }
+        .map-card:nth-child(4) { animation-delay: 0.7s; }
         
         .map-description {
-            animation: fadeInUp 0.8s ease-out 1.4s both;
-        }
-        
-        /* Эффект параллакса для фона */
-        .parallax-bg {
-            background-attachment: fixed;
+            animation: fadeInUp 0.8s ease-out 0.8s both;
         }
         
         /* Анимация для картинок при загрузке */
         img {
             opacity: 0;
             transform: scale(0.9);
-            transition: opacity 0.8s ease, transform 0.8s ease;
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
         
         img.loaded {
             opacity: 1;
             transform: scale(1);
+        }
+        
+        /* Блок "Как работать с картами?" */
+        .info-block {
+            margin-top: 1.5rem;
+            background: #f0f4f8;
+            padding: 1.5rem;
+            border-radius: 8px;
+            animation: quickPulse 2s infinite;
         }
         
         /* Адаптация */
@@ -369,19 +225,15 @@
                 font-size: 2rem;
             }
             
-            header::before {
-                animation: none;
-            }
-            
-            .map-card:hover {
-                transform: translateY(-5px);
+            .info-block {
+                animation: quickPulse 3s infinite;
             }
         }
     </style>
 </head>
 <body>
-    <header class="parallax-bg">
-        <h1 class="animated-title">Коллекция карт</h1>
+    <header>
+        <h1>Коллекция карт</h1>
         <p class="description">Исследуйте различные типы исторических и современных карт</p>
         <a href="index.html" class="back-link">← На главную</a>
     </header>
@@ -436,7 +288,7 @@
             <h2>О коллекции карт</h2>
             <p>Наша коллекция состоит из исторических и современных карт различных регионов мира. Все карты систематизированы по типам, эпохам и географическому охвату. Используйте фильтры для удобного поиска нужных материалов.</p>
             
-            <div style="margin-top: 1.5rem; background: #f0f4f8; padding: 1.5rem; border-radius: 8px; animation: pulse 6s infinite;">
+            <div class="info-block">
                 <h3>Как работать с картами?</h3>
                 <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
                     <li style="margin-bottom: 0.5rem;">Нажмите на интересующий тип карт для просмотра коллекции</li>
@@ -451,32 +303,20 @@
     <footer>
         <p>&copy; Map Catalog | Все карты доступны для использования</p>
         <p style="margin-top: 0.5rem; font-size: 0.9rem;">
-            <a href="about.html" style="color: var(--secondary-color); text-decoration: none;">О проекте</a> | 
-            <a href="contacts.html" style="color: var(--secondary-color); text-decoration: none;">Контакты</a> | 
-            <a href="donate.html" style="color: var(--secondary-color); text-decoration: none;">Поддержать проект</a>
+            <a href="about.html">О проекте</a> | 
+            <a href="contacts.html">Контакты</a> | 
+            <a href="donate.html">Поддержать проект</a>
         </p>
     </footer>
 
     <script>
-        // Добавляем анимацию при скролле
+        // Загрузка изображений с анимацией
         document.addEventListener('DOMContentLoaded', function() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animated');
-                    }
-                });
-            }, { threshold: 0.1 });
-            
-            document.querySelectorAll('.map-card, .map-description').forEach(el => {
-                observer.observe(el);
-            });
-            
-            // Параллакс эффект для шапки
-            window.addEventListener('scroll', function() {
-                const header = document.querySelector('header');
-                const scrollPosition = window.pageYOffset;
-                header.style.backgroundPositionY = scrollPosition * 0.5 + 'px';
+            const images = document.querySelectorAll('img');
+            images.forEach(img => {
+                if (img.complete) {
+                    img.classList.add('loaded');
+                }
             });
         });
     </script>
