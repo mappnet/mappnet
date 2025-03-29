@@ -232,7 +232,7 @@
         .card:nth-child(4) { animation-delay: 1.4s; }
 
         /* Анимированный подвал */
-        footer {
+                footer {
             text-align: center;
             padding: 25px;
             background: var(--primary-color);
@@ -240,7 +240,21 @@
             position: relative;
             z-index: 2;
             opacity: 0;
-            animation: fadeIn 1s ease-out 2s forwards;
+            animation: fadeIn 0.5s ease-out 1.2s forwards; /* Уменьшил задержку */
+        }
+
+        /* Добавим временный фон, чтобы скрыть белый промежуток */
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: var(--primary-color);
+            z-index: 1;
+            opacity: 0;
+            animation: fadeIn 0.1s ease-out 0.5s forwards;
         }
 
         /* Эффект подчеркивания для ссылок */
@@ -332,29 +346,28 @@
     </footer>
 
     <script>
-        // Дополнительные JS-эффекты
         document.addEventListener('DOMContentLoaded', () => {
-            // Анимация при скролле
+            // Улучшенная инициализация анимаций
             const cards = document.querySelectorAll('.card');
+            const footer = document.querySelector('footer');
             
-            const animateOnScroll = () => {
+            // Показываем подвал раньше, чем карточки
+            footer.style.animation = 'fadeIn 0.5s ease-out 0.8s forwards';
+            
+            // Анимация карточек с оптимизированными задержками
+            cards.forEach((card, index) => {
+                const delay = 0.5 + (index * 0.15);
+                card.style.animation = `fadeIn 0.8s ease-out ${delay}s forwards, float 6s ease-in-out infinite ${delay + 1}s`;
+            });
+
+            // Плавный скролл-эффект
+            window.addEventListener('scroll', () => {
                 cards.forEach(card => {
                     const cardPosition = card.getBoundingClientRect().top;
-                    const screenPosition = window.innerHeight / 1.3;
-                    
-                    if(cardPosition < screenPosition) {
+                    if(cardPosition < window.innerHeight * 0.8) {
                         card.style.animationPlayState = 'running';
                     }
                 });
-            };
-            
-            window.addEventListener('scroll', animateOnScroll);
-            animateOnScroll(); // Инициализация при загрузке
-            
-            // Случайное колебание карточек
-            cards.forEach((card, index) => {
-                card.style.setProperty('--delay', `${index * 0.1}s`);
-                card.style.animationDelay = `calc(0.5s + var(--delay))`;
             });
         });
     </script>
