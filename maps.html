@@ -222,7 +222,12 @@
             margin-top: 1rem;
         }
         
-        .info-link {
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropbtn {
             display: inline-block;
             padding: 0.5rem 1rem;
             background: var(--secondary-color);
@@ -231,11 +236,48 @@
             border-radius: 4px;
             font-weight: bold;
             transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            min-width: 160px;
+            text-align: center;
         }
         
-        .info-link:hover {
+        .dropbtn:hover {
             background: var(--accent-color);
             transform: translateY(-2px);
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 4px;
+            overflow: hidden;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .dropdown-content a {
+            color: var(--text-dark);
+            padding: 0.75rem 1rem;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: #f0f4f8;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
         }
         
         /* Адаптация */
@@ -250,6 +292,12 @@
             
             .info-links {
                 flex-direction: column;
+            }
+            
+            .dropdown-content {
+                position: static;
+                box-shadow: none;
+                border: 1px solid #ddd;
             }
         }
     </style>
@@ -314,10 +362,45 @@
             <div class="info-block">
                 <h3>Как работать с картами?</h3>
                 <div class="info-links">
-                    <a href="physical-maps.html" class="info-link">Физические карты</a>
-                    <a href="political-maps.html" class="info-link">Политические карты</a>
-                    <a href="economic-maps.html" class="info-link">Экономические карты</a>
-                    <a href="ethnic-maps.html" class="info-link">Этнические карты</a>
+                    <div class="dropdown">
+                        <button class="dropbtn">Физические карты</button>
+                        <div class="dropdown-content">
+                            <a href="physical-maps.html">Просмотреть коллекцию</a>
+                            <a href="#">Скачать в PDF</a>
+                            <a href="#">Сравнить с другими</a>
+                            <a href="#">Поделиться</a>
+                        </div>
+                    </div>
+                    
+                    <div class="dropdown">
+                        <button class="dropbtn">Политические карты</button>
+                        <div class="dropdown-content">
+                            <a href="political-maps.html">Просмотреть коллекцию</a>
+                            <a href="#">Скачать в PDF</a>
+                            <a href="#">Сравнить с другими</a>
+                            <a href="#">Поделиться</a>
+                        </div>
+                    </div>
+                    
+                    <div class="dropdown">
+                        <button class="dropbtn">Экономические карты</button>
+                        <div class="dropdown-content">
+                            <a href="economic-maps.html">Просмотреть коллекцию</a>
+                            <a href="#">Скачать в PDF</a>
+                            <a href="#">Сравнить с другими</a>
+                            <a href="#">Поделиться</a>
+                        </div>
+                    </div>
+                    
+                    <div class="dropdown">
+                        <button class="dropbtn">Этнические карты</button>
+                        <div class="dropdown-content">
+                            <a href="ethnic-maps.html">Просмотреть коллекцию</a>
+                            <a href="#">Скачать в PDF</a>
+                            <a href="#">Сравнить с другими</a>
+                            <a href="#">Поделиться</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -339,6 +422,18 @@
             images.forEach(img => {
                 if (img.complete) {
                     img.classList.add('loaded');
+                }
+            });
+            
+            // Закрытие выпадающих списков при клике вне их
+            document.addEventListener('click', function(event) {
+                if (!event.target.matches('.dropbtn')) {
+                    const dropdowns = document.querySelectorAll('.dropdown-content');
+                    dropdowns.forEach(dropdown => {
+                        if (dropdown.style.display === 'block') {
+                            dropdown.style.display = 'none';
+                        }
+                    });
                 }
             });
         });
