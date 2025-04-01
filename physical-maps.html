@@ -1,1 +1,337 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Коллекция карт</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --text-light: #ecf0f1;
+            --text-dark: #2c3e50;
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Georgia', serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+            url('https://get.wallhere.com/photo/landscape-mountains-national-park-Valley-Alps-plateau-ridge-mountain-range-174993.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 2rem 1rem;
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .maps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .map-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .map-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .map-preview {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+
+        .map-info {
+            padding: 1rem;
+        }
+
+        .map-title {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .map-meta {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .download-btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            transition: background 0.3s;
+        }
+
+        .download-btn:hover {
+            background: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .maps-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 8px 16px;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            background: var(--primary-color);
+        }
+
+        .filter-btn.active {
+            background: var(--accent-color);
+            transform: scale(1.05);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .filter-btn.multiple {
+            position: relative;
+            padding-right: 16px;
+        }
+
+        .filter-btn.multiple::after {
+            content: "";
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: bold;
+        }
+
+        .filter-btn.multiple.active::after {
+            content: "";
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Коллекция карт</h1>
+    <p>Исторические и современные географические карты</p>
+</header>
+<div class="container">
+    <div class="filters">
+        <button class="filter-btn" onclick="toggleFilter('all')">Все</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('Мир')">Мир</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('Европа')">Европа</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('Азия')">Азия</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('СевернаяАмерика')">Северная Америка</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('ЮжнаяАмерика')">Южная Америка</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('Океания')">Океания</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('Африка')">Африка</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('Полюса')">Полюса</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('Города')">С городами</button>
+    </div>
+
+    <div class="maps-grid"></div>
+</div>
+
+<script>
+    const mapsDatabase = [
+        {
+            title: "Европа",
+            imageUrl: "https://lh3.googleusercontent.com/d/1Tic6VCwvy8LdseaiwJBLv3Pl8MgOc_4a",
+            downloadUrl: "https://drive.google.com/file/d/1Tic6VCwvy8LdseaiwJBLv3Pl8MgOc_4a/view?usp=drive_link",
+            category: ["Европа"]
+        },
+        {
+            title: "Мир",
+            imageUrl: "https://ic.pics.livejournal.com/afework/13390797/79202/79202_original.jpg",
+            downloadUrl: "https://ic.pics.livejournal.com/afework/13390797/79202/79202_original.jpg",
+            category: ["Мир", "Города"]
+        },
+        {
+            title: "Центральная Африка",
+            imageUrl: "https://esdac.jrc.ec.europa.eu/images/Eudasm/Africa/images/maps/download/afr_pgrwma.jpg",
+            downloadUrl: "https://esdac.jrc.ec.europa.eu/images/Eudasm/Africa/images/maps/download/afr_pgrwma.jpg",
+            category: ["Африка"]
+        },
+        {
+            title: "Мир",
+            imageUrl: "https://i.pinimg.com/originals/b9/eb/43/b9eb43b9e61d4516640a013b3399fb22.jpg",
+            downloadUrl: "https://i.pinimg.com/originals/b9/eb/43/b9eb43b9e61d4516640a013b3399fb22.jpg",
+            category: ["Мир"]
+        },
+        {
+            title: "Европа",
+            imageUrl: "https://lh3.googleusercontent.com/d/1HH0rP672N5S1VnV1qsR9UtY3EBhB_ngl",
+            downloadUrl: "https://drive.google.com/file/d/1HH0rP672N5S1VnV1qsR9UtY3EBhB_ngl/view?usp=drive_link",
+            category: ["Европа"]
+        },
+        {
+            title: "Ближний Восток",
+            imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Middle_East_topographic_map-blank.svg/3097px-Middle_East_topographic_map-blank.svg.png",
+            downloadUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Middle_East_topographic_map-blank.svg/3097px-Middle_East_topographic_map-blank.svg.png",
+            category: ["Азия"]
+        },
+        {
+            title: "Северная Америка",
+            imageUrl: "https://lh3.googleusercontent.com/d/16zJtoHGFVBcxGXADMokYLJl8zQv_Yt-v",
+            downloadUrl: "https://drive.google.com/file/d/16zJtoHGFVBcxGXADMokYLJl8zQv_Yt-v/view?usp=drive_link",
+            category: ["СевернаяАмерика"]
+        },
+        {
+            title: "Мир",
+            imageUrl: "https://lh3.googleusercontent.com/d/1EqW3Nk4GptVzBEv3KqfGjQrWFMZHe5ku",
+            downloadUrl: "https://drive.google.com/file/d/1EqW3Nk4GptVzBEv3KqfGjQrWFMZHe5ku/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Балтика",
+            imageUrl: "https://lh3.googleusercontent.com/d/1XipmVdbDKG6SR4hW1yVTWFP1gWLL2Te_",
+            downloadUrl: "https://drive.google.com/file/d/1XipmVdbDKG6SR4hW1yVTWFP1gWLL2Te_/view?usp=drive_link",
+            category: ["Европа"]
+        },
+        {
+            title: "Антарктида",
+            imageUrl: "http://fishbiosystem.ru/Map/Antarctica%208f%20map%20Карта%20подлёдного%20рельефа.jpg",
+            downloadUrl: "http://fishbiosystem.ru/Map/Antarctica%208f%20map%20Карта%20подлёдного%20рельефа.jpg",
+            category: ["Полюса"]
+        },
+        {
+            title: "Антарктида",
+            imageUrl: "https://lh3.googleusercontent.com/d/1jjSpkT-ITHrO2g5G1jn8eB2__eRP6mZ7",
+            downloadUrl: "https://drive.google.com/file/d/1jjSpkT-ITHrO2g5G1jn8eB2__eRP6mZ7/view?usp=drive_link",
+            category: ["Полюса"]
+        },
+    ];
+
+    // Храним выбранные фильтры
+    let activeFilters = new Set();
+
+    function createMapCard(map) {
+        const card = document.createElement('div');
+        card.className = 'map-card';
+        card.innerHTML = `
+            <img src="${map.imageUrl}" width="800" height="600" class="map-preview">
+            <div class="map-info">
+                <h3 class="map-title">${map.title}</h3>
+                <a href="${map.downloadUrl}" class="download-btn" target="_blank" rel="noopener noreferrer">
+                    Скачать карту
+                </a>
+            </div>
+        `;
+        return card;
+    }
+
+    function renderMaps(maps = mapsDatabase) {
+        const mapsGrid = document.querySelector('.maps-grid');
+        mapsGrid.innerHTML = '';
+
+        // Если нет активных фильтров или выбран "Все", показываем все карты
+        if (activeFilters.size === 0 || activeFilters.has('all')) {
+            maps.forEach(map => {
+                mapsGrid.appendChild(createMapCard(map));
+            });
+        } else {
+            // Фильтруем карты по выбранным категориям
+            const filteredMaps = maps.filter(map => {
+                // Проверяем, есть ли хоть одна категория карты в активных фильтрах
+                return map.category.some(cat => activeFilters.has(cat));
+            });
+
+            filteredMaps.forEach(map => {
+                mapsGrid.appendChild(createMapCard(map));
+            });
+        }
+    }
+
+    function toggleFilter(category) {
+        const allBtn = document.querySelector('.filter-btn:not(.multiple)');
+
+        if (category === 'all') {
+            // Обработка кнопки "Все"
+            activeFilters.clear();
+            activeFilters.add('all');
+
+            // Сбрасываем все другие кнопки
+            document.querySelectorAll('.filter-btn.multiple').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            allBtn.classList.add('active');
+        } else {
+            // Убираем "Все" из активных фильтров
+            activeFilters.delete('all');
+            allBtn.classList.remove('active');
+
+            // Переключаем текущий фильтр
+            if (activeFilters.has(category)) {
+                activeFilters.delete(category);
+            } else {
+                activeFilters.add(category);
+            }
+
+            // Обновляем состояние кнопки
+            const btn = [...document.querySelectorAll('.filter-btn')]
+                .find(b => b.textContent.includes(category));
+            if (btn) btn.classList.toggle('active');
+
+            // Если нет активных фильтров, активируем "Все"
+            if (activeFilters.size === 0) {
+                activeFilters.add('all');
+                allBtn.classList.add('active');
+            }
+        }
+
+        renderMaps();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Инициализация - активна кнопка "Все"
+        activeFilters.add('all');
+        document.querySelector('.filter-btn:not(.multiple)').classList.add('active');
+        renderMaps();
+    });
+</script>
+</body>
+</html>
