@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Коллекция карт</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --text-light: #ecf0f1;
+            --text-dark: #2c3e50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Georgia', serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+            url('https://get.wallhere.com/photo/landscape-mountains-national-park-Valley-Alps-plateau-ridge-mountain-range-174993.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 2rem 1rem;
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .maps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .map-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .map-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .map-preview {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+
+        .map-info {
+            padding: 1rem;
+        }
+
+        .map-title {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .map-meta {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .download-btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            transition: background 0.3s;
+        }
+
+        .download-btn:hover {
+            background: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .maps-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 8px 16px;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            background: var(--primary-color);
+        }
+
+        .filter-btn.active {
+            background: var(--accent-color);
+            transform: scale(1.05);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .filter-btn.multiple {
+            position: relative;
+            padding-right: 16px;
+        }
+
+        .filter-btn.multiple::after {
+            content: "";
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: bold;
+        }
+
+        .filter-btn.multiple.active::after {
+            content: "";
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Коллекция карт</h1>
+    <p>Исторические и современные географические карты</p>
+</header>
+<div class="container">
+    <div class="filters">
+        <button class="filter-btn" onclick="toggleFilter('all')">Все</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('Мир')">Мир</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('Европа')">Европа</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('Азия')">Азия</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('СевернаяАмерика')">Северная Америка</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('ЮжнаяАмерика')">Южная Америка</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('Океания')">Океания</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('Африка')">Африка</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('Океаны')">Океаны</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('Города')">С городами</button>
+    </div>
+
+    <div class="maps-grid"></div>
+</div>
+
+<script>
+    const mapsDatabase = [
+        {
+            title: "Европа",
+            imageUrl: "https://lh3.googleusercontent.com/d/1qW0eanwcDfucoOBK5VmaNWj5i7JUXycc",
+            downloadUrl: "https://drive.google.com/file/d/1qW0eanwcDfucoOBK5VmaNWj5i7JUXycc/view?usp=sharing",
+            category: ["Европа", "Города"]
+        },
+        {
+            title: "Западная Африка",
+            imageUrl: "https://lh3.googleusercontent.com/d/1AWJnkN8lbxU9Wak_qjICvo8n2EMtuH6x",
+            downloadUrl: "https://drive.google.com/file/d/1AWJnkN8lbxU9Wak_qjICvo8n2EMtuH6x/view?usp=drive_link",
+            category: ["Африка", "Города"]
+        },
+        {
+            title: "Европа",
+            imageUrl: "https://lh3.googleusercontent.com/d/1Gv87FLhXQu5EnJS9gooP-TsEPcokj70d",
+            downloadUrl: "https://drive.google.com/file/d/1Gv87FLhXQu5EnJS9gooP-TsEPcokj70d/view?usp=drive_link",
+            category: ["Европа", "Города"]
+        },
+        {
+            title: "Западная Африка",
+            imageUrl: "https://lh3.googleusercontent.com/d/1CjyLSz3r0pNyWwJzPkX6TCk-kwKknWeB",
+            downloadUrl: "https://drive.google.com/file/d/1CjyLSz3r0pNyWwJzPkX6TCk-kwKknWeB/view?usp=drive_link",
+            category: ["Африка", "Города"]
+        },
+        {
+            title: "Центральная Африка",
+            imageUrl: "https://lh3.googleusercontent.com/d/18aGmO50P5r19eGwcQzGAikwwqsQXmWdX",
+            downloadUrl: "https://drive.google.com/file/d/18aGmO50P5r19eGwcQzGAikwwqsQXmWdX/view?usp=drive_link",
+            category: ["Африка", "Города"]
+        },
+        {
+            title: "Мир",
+            imageUrl: "https://oir.mobi/uploads/posts/2024-03/1711619456_oir-mobi-xejj-p-karti-mira-123.jpg",
+            downloadUrl: "https://oir.mobi/uploads/posts/2024-03/1711619456_oir-mobi-xejj-p-karti-mira-123.jpg",
+            category: ["Мир", "Города"]
+        },
+        {
+            title: "Мир",
+            imageUrl: "https://www.regio.ee/wp-content/uploads/2021/05/maailm_physical_mapsinternational.jpg",
+            downloadUrl: "https://www.regio.ee/wp-content/uploads/2021/05/maailm_physical_mapsinternational.jpg",
+            category: ["Мир", "Города"]
+        },
+        {
+            title: "Центральная Африка",
+            imageUrl: "https://esdac.jrc.ec.europa.eu/images/Eudasm/Africa/images/maps/download/afr_brr.jpg",
+            downloadUrl: "https://esdac.jrc.ec.europa.eu/images/Eudasm/Africa/images/maps/download/afr_brr.jpg",
+            category: ["Африка", "Города"]
+        },
+        {
+            title: "Центральная Африка",
+            imageUrl: "https://cdn.britannica.com/72/5372-050-7385F119/basin-Congo-River-drainage-network.jpg",
+            downloadUrl: "https://cdn.britannica.com/72/5372-050-7385F119/basin-Congo-River-drainage-network.jpg",
+            category: ["Африка", "Города"]
+        },
+        {
+            title: "Великобритания",
+            imageUrl: "https://volamar.ru/audio_video/04sirius/atlas/017a.jpg",
+            downloadUrl: "https://volamar.ru/audio_video/04sirius/atlas/017a.jpg",
+            category: ["Европа", "Города"]
+        },
+        {
+            title: "Греция",
+            imageUrl: "https://avatars.mds.yandex.net/i?id=d0a3bd008749031413253aac3eb9f7a1_l-4116495-images-thumbs&n=13",
+            downloadUrl: "https://avatars.mds.yandex.net/i?id=d0a3bd008749031413253aac3eb9f7a1_l-4116495-images-thumbs&n=13",
+            category: ["Европа", "Города"]
+        },
+        {
+            title: "Румыния",
+            imageUrl: "https://i0.wp.com/www.cazaretransilvania.ro/Harta-map/harta-turistica/Romania-Harta.jpg?ssl=1",
+            downloadUrl: "https://i0.wp.com/www.cazaretransilvania.ro/Harta-map/harta-turistica/Romania-Harta.jpg?ssl=1",
+            category: ["Европа", "Города"]
+        },
+        {
+            title: "Европа",
+            imageUrl: "https://lh3.googleusercontent.com/d/1JsxfZlw5LOuyuBMrA_9LaGHlwD-iu7_r",
+            downloadUrl: "https://drive.google.com/file/d/1JsxfZlw5LOuyuBMrA_9LaGHlwD-iu7_r/view?usp=drive_link",
+            category: ["Европа", "Города"]
+        },
+        {
+            title: "Европа 116",
+            imageUrl: "https://lh3.googleusercontent.com/d/1uhs6OZlQEXx4fxMKPeRuHzYT0SrWcfmw",
+            downloadUrl: "https://drive.google.com/file/d/1uhs6OZlQEXx4fxMKPeRuHzYT0SrWcfmw/view?usp=drive_link",
+            category: ["Европа", "Города"]
+        },
+        {
+            title: "Европа 814",
+            imageUrl: "https://lh3.googleusercontent.com/d/1HzlqTrrdhFRPp-PyqT5LSBTiK-7YW5hj",
+            downloadUrl: "https://drive.google.com/file/d/1HzlqTrrdhFRPp-PyqT5LSBTiK-7YW5hj/view?usp=drive_link",
+            category: ["Европа", "Города"]
+        },
+        {
+            title: "Швейцария",
+            imageUrl: "https://lh3.googleusercontent.com/d/1SLAw-OOlK2T9X5q5iec9YKQUXJ13SYl3",
+            downloadUrl: "https://drive.google.com/file/d/1SLAw-OOlK2T9X5q5iec9YKQUXJ13SYl3/view?usp=drive_link",
+            category: ["Европа", "Города"]
+        },
+        {
+            title: "Франция",
+            imageUrl: "https://lh3.googleusercontent.com/d/1MvczvAuBc6r2E3bLIuN-ZVvto12qQOHH",
+            downloadUrl: "https://drive.google.com/file/d/1MvczvAuBc6r2E3bLIuN-ZVvto12qQOHH/view?usp=drive_link",
+            category: ["Европа", "Города"]
+        },
+        {
+            title: "Трансильвания",
+            imageUrl: "https://lh3.googleusercontent.com/d/1Xp73TnB3zvcHqfvJOCI-qBrujMVPcDAh",
+            downloadUrl: "https://drive.google.com/file/d/1Xp73TnB3zvcHqfvJOCI-qBrujMVPcDAh/view?usp=drive_link",
+            category: ["Европа", "Города"]
+        },
+        {
+            title: "Сербия",
+            imageUrl: "https://lh3.googleusercontent.com/d/1U2Ym7EUBDB3b9yGSeb7fynLiwI7mK1Vh",
+            downloadUrl: "https://drive.google.com/file/d/1U2Ym7EUBDB3b9yGSeb7fynLiwI7mK1Vh/view?usp=drive_link",
+            category: ["Европа", "Города"]
+        },
+        {
+            title: "Румыния",
+            imageUrl: "https://lh3.googleusercontent.com/d/1QHmeuDbxKnIjWCdJsW8SDl5FJn1XSiWv",
+            downloadUrl: "https://drive.google.com/file/d/1QHmeuDbxKnIjWCdJsW8SDl5FJn1XSiWv/view?usp=drive_link",
+            category: ["Европа", "Города"]
+        },
+        {
+            title: "Крым",
+            imageUrl: "https://lh3.googleusercontent.com/d/1ZifIk5-If_uIp4U0pxkj45SUzsq1Fcn7",
+            downloadUrl: "https://drive.google.com/file/d/1ZifIk5-If_uIp4U0pxkj45SUzsq1Fcn7/view?usp=drive_link",
+            category: ["Европа", "Города"]
+        },
+        {
+            title: "Италия",
+            imageUrl: "https://lh3.googleusercontent.com/d/1Ge6oWUuINMcKXGLkR9SqDIPePyR87wEu",
+            downloadUrl: "https://drive.google.com/file/d/1Ge6oWUuINMcKXGLkR9SqDIPePyR87wEu/view?usp=drive_link",
+            category: ["Европа", "Города"]
+        },
+        {
+            title: "Испания",
+            imageUrl: "https://lh3.googleusercontent.com/d/1hVDFC-M7d1I_Nq9Upi-duyoZEHlglM4N",
+            downloadUrl: "https://drive.google.com/file/d/1hVDFC-M7d1I_Nq9Upi-duyoZEHlglM4N/view?usp=drive_link",
+            category: ["Европа", "Города"]
+        },
+        {
+            title: "Испания",
+            imageUrl: "https://lh3.googleusercontent.com/d/1eIQu5j-uTiItlBH3GjR4hrse6dLHGPRI",
+            downloadUrl: "https://drive.google.com/file/d/1eIQu5j-uTiItlBH3GjR4hrse6dLHGPRI/view?usp=drive_link",
+            category: ["Европа", "Города"]
+        },
+        {
+            title: "Восточная Европа",
+            imageUrl: "https://lh3.googleusercontent.com/d/1J0mVVQVXjpiEYTQBlvw_UY5-XIn6TkXk",
+            downloadUrl: "https://drive.google.com/file/d/1J0mVVQVXjpiEYTQBlvw_UY5-XIn6TkXk/view?usp=drive_link",
+            category: ["Европа", "Города"]
+        },
+        {
+            title: "Балканы",
+            imageUrl: "https://lh3.googleusercontent.com/d/16s94ZX03Gsw_Qaj7qIvdr1ORVVHt0_Jq",
+            downloadUrl: "https://drive.google.com/file/d/16s94ZX03Gsw_Qaj7qIvdr1ORVVHt0_Jq/view?usp=drive_link",
+            category: ["Европа", "Города"]
+        },
+        {
+            title: "Австрия",
+            imageUrl: "https://lh3.googleusercontent.com/d/16WqtFeXWYZjMrRMACDELACe7oZylbFpn",
+            downloadUrl: "https://drive.google.com/file/d/16WqtFeXWYZjMrRMACDELACe7oZylbFpn/view?usp=drive_link",
+            category: ["Европа", "Города"]
+        },
+        {
+            title: "Иран",
+            imageUrl: "https://lh3.googleusercontent.com/d/1yjj_3Ty4aNvlPr5005PVvMkdwZ76-aAk",
+            downloadUrl: "https://drive.google.com/file/d/1yjj_3Ty4aNvlPr5005PVvMkdwZ76-aAk/view?usp=drive_link",
+            category: ["Азия", "Города"]
+        },
+        {
+            title: "Ближний Восток",
+            imageUrl: "https://map-rus.com/images/443.jpg",
+            downloadUrl: "https://map-rus.com/images/443.jpg",
+            category: ["Азия", "Города"]
+        },
+        {
+            title: "Израиль",
+            imageUrl: "https://transport-online.ru/wp-content/uploads/2023/11/karta-izrailya-geograficheskaya-big.jpg",
+            downloadUrl: "https://transport-online.ru/wp-content/uploads/2023/11/karta-izrailya-geograficheskaya-big.jpg",
+            category: ["Азия", "Города"]
+        },
+        {
+            title: "Азия",
+            imageUrl: "https://lh3.googleusercontent.com/d/1zfB4Yij5mJANL7Bavy1mdBb_b8CBkDuU",
+            downloadUrl: "https://drive.google.com/file/d/1zfB4Yij5mJANL7Bavy1mdBb_b8CBkDuU/view?usp=drive_link",
+            category: ["Азия", "Города"]
+        },
+        {
+            title: "Азия",
+            imageUrl: "https://lh3.googleusercontent.com/d/1SC_-CF9Yk0U55_faf_pu3GTvSn31sMkv",
+            downloadUrl: "https://drive.google.com/file/d/1SC_-CF9Yk0U55_faf_pu3GTvSn31sMkv/view?usp=drive_link",
+            category: ["Азия", "Города"]
+        },
+        {
+            title: "Средняя Азия",
+            imageUrl: "https://lh3.googleusercontent.com/d/1464RrfWut6Vl9TF_8zetp4p6FEF1C24c",
+            downloadUrl: "https://drive.google.com/file/d/1464RrfWut6Vl9TF_8zetp4p6FEF1C24c/view?usp=drive_link",
+            category: ["Азия", "Города"]
+        },
+        {
+            title: "Средняя Азия",
+            imageUrl: "https://lh3.googleusercontent.com/d/1aVH7QrFnJJiqUYIEgU87NN4JZIW9fv5K",
+            downloadUrl: "https://drive.google.com/file/d/1aVH7QrFnJJiqUYIEgU87NN4JZIW9fv5K/view?usp=drive_link",
+            category: ["Азия", "Города"]
+        },
+        {
+            title: "Туркестан 19 век",
+            imageUrl: "https://lh3.googleusercontent.com/d/1e16sI1Ft4ZDGLoSaCaezlz7c-Y3MFb70",
+            downloadUrl: "https://drive.google.com/file/d/1e16sI1Ft4ZDGLoSaCaezlz7c-Y3MFb70/view?usp=drive_link",
+            category: ["Азия", "Города"]
+        },
+        {
+            title: "Евразия",
+            imageUrl: "https://lh3.googleusercontent.com/d/1sHq4i87y0pMiJ_U3W50u354DGrjJfw45",
+            downloadUrl: "https://drive.google.com/file/d/1sHq4i87y0pMiJ_U3W50u354DGrjJfw45/view?usp=drive_link",
+            category: ["Азия", "Европа", "Города"]
+        },
+        {
+            title: "Ближний Восток",
+            imageUrl: "https://lh3.googleusercontent.com/d/1w4ZhwZSWElEECDWtRGLjWpZtQUoNzPx2",
+            downloadUrl: "https://drive.google.com/file/d/1w4ZhwZSWElEECDWtRGLjWpZtQUoNzPx2/view?usp=drive_link",
+            category: ["Азия", "Города"]
+        },
+        {
+            title: "Аравийский п-ов",
+            imageUrl: "https://lh3.googleusercontent.com/d/1FAFZi5GWAtSoVVa9oURvoWmmY1oKG4n9",
+            downloadUrl: "https://drive.google.com/file/d/1FAFZi5GWAtSoVVa9oURvoWmmY1oKG4n9/view?usp=drive_link",
+            category: ["Азия", "Города"]
+        },
+        {
+            title: "Юго-восток США",
+            imageUrl: "https://lh3.googleusercontent.com/d/1oC_BBzzBGBqUjwEjT-O3cY-3GsafsO4F",
+            downloadUrl: "https://drive.google.com/file/d/1oC_BBzzBGBqUjwEjT-O3cY-3GsafsO4F/view?usp=drive_link",
+            category: ["СевернаяАмерика", "Города"]
+        },
+        {
+            title: "Северная Америка",
+            imageUrl: "https://lh3.googleusercontent.com/d/1a6cvq15-rUZ9uDdVd-OCgpmSI8FZNOCX",
+            downloadUrl: "https://drive.google.com/file/d/1a6cvq15-rUZ9uDdVd-OCgpmSI8FZNOCX/view?usp=drive_link",
+            category: ["СевернаяАмерика", "Города"]
+        },
+        {
+            title: "США",
+            imageUrl: "https://lh3.googleusercontent.com/d/1LI_IDJkgcLx-LwO_1D8vjZIgLJ7rbAWS",
+            downloadUrl: "https://drive.google.com/file/d/1LI_IDJkgcLx-LwO_1D8vjZIgLJ7rbAWS/view?usp=drive_link",
+            category: ["СевернаяАмерика", "Города"]
+        },
+        {
+            title: "Северная Америка",
+            imageUrl: "https://lh3.googleusercontent.com/d/1aWeadxWRoJPxqXmRac2NPCc9TI1vmUwu",
+            downloadUrl: "https://drive.google.com/file/d/1aWeadxWRoJPxqXmRac2NPCc9TI1vmUwu/view?usp=drive_link",
+            category: ["СевернаяАмерика", "Города"]
+        },
+        {
+            title: "Колумбия",
+            imageUrl: "https://old.bigenc.ru/media/2016/10/27/1235196435/%D0%9A%D0%9E%D0%9B%D0%A3%D0%9C%D0%91%D0%98%D0%AF.jpg",
+            downloadUrl: "https://old.bigenc.ru/media/2016/10/27/1235196435/%D0%9A%D0%9E%D0%9B%D0%A3%D0%9C%D0%91%D0%98%D0%AF.jpg",
+            category: ["ЮжнаяАмерика", "Города"]
+        },
+        {
+            title: "Южная Америка",
+            imageUrl: "https://lh3.googleusercontent.com/d/10_QlNujNM2naZq4SAWx3CG5DhGr_zj-R",
+            downloadUrl: "https://drive.google.com/file/d/10_QlNujNM2naZq4SAWx3CG5DhGr_zj-R/view?usp=drive_link",
+            category: ["ЮжнаяАмерика", "Города"]
+        },
+        {
+            title: "Южная Америка",
+            imageUrl: "https://lh3.googleusercontent.com/d/1YPcQj9cSTnkjsC2Y-WPF61LoC2mT58qn",
+            downloadUrl: "https://drive.google.com/file/d/1YPcQj9cSTnkjsC2Y-WPF61LoC2mT58qn/view?usp=drive_link",
+            category: ["ЮжнаяАмерика", "Города"]
+        },
+        {
+            title: "Перу-Боливия",
+            imageUrl: "https://lh3.googleusercontent.com/d/1IQbd5rm7pDZekVfUGILw0NpzNXTo3PIA",
+            downloadUrl: "https://drive.google.com/file/d/1IQbd5rm7pDZekVfUGILw0NpzNXTo3PIA/view?usp=drive_link",
+            category: ["ЮжнаяАмерика", "Города"]
+        },
+        {
+            title: "Южная Америка",
+            imageUrl: "https://lh3.googleusercontent.com/d/1nYkKQmeHCf9CO9pV37qmWGfSOR1Aofxv",
+            downloadUrl: "https://drive.google.com/file/d/1nYkKQmeHCf9CO9pV37qmWGfSOR1Aofxv/view?usp=drive_link",
+            category: ["ЮжнаяАмерика", "Города"]
+        },
+        {
+            title: "Океания",
+            imageUrl: "https://lh3.googleusercontent.com/d/1AImUEt1H6CsBQycO5zxIt1d4JB5QABx5",
+            downloadUrl: "https://drive.google.com/file/d/1AImUEt1H6CsBQycO5zxIt1d4JB5QABx5/view?usp=drive_link",
+            category: ["Океания", "Города"]
+        },
+        {
+            title: "Новая Зеландия",
+            imageUrl: "https://lh3.googleusercontent.com/d/1j_SJevDDzOyiNMXlhhcJAoxDX-uN2_Z7",
+            downloadUrl: "https://drive.google.com/file/d/1j_SJevDDzOyiNMXlhhcJAoxDX-uN2_Z7/view?usp=sharing",
+            category: ["Океания", "Города"]
+        },
+        {
+            title: "Новая Зеландия",
+            imageUrl: "https://lh3.googleusercontent.com/d/1DVV8iin2kKjEFZZjcYextw8LQDsyEvoh",
+            downloadUrl: "https://drive.google.com/file/d/1DVV8iin2kKjEFZZjcYextw8LQDsyEvoh/view?usp=drive_link",
+            category: ["Океания", "Города"]
+        },
+        {
+            title: "Австралия",
+            imageUrl: "https://lh3.googleusercontent.com/d/1ZQ24tZ1YS8MN79sEuaZwgIjDdePS0wYN",
+            downloadUrl: "https://drive.google.com/file/d/1ZQ24tZ1YS8MN79sEuaZwgIjDdePS0wYN/view?usp=drive_link",
+            category: ["Океания", "Города"]
+        },
+        {
+            title: "Океания",
+            imageUrl: "https://lh3.googleusercontent.com/d/1cobkkdsI9MWB49L29_j-9YPXQROgdW1a",
+            downloadUrl: "https://drive.google.com/file/d/1cobkkdsI9MWB49L29_j-9YPXQROgdW1a/view?usp=drive_link",
+            category: ["Океания", "Города"]
+        },
+        {
+            title: "Океания",
+            imageUrl: "https://lh3.googleusercontent.com/d/1F4mQ33gpMNRyAQeMQ6m3hKwOqB12addz",
+            downloadUrl: "https://drive.google.com/file/d/1F4mQ33gpMNRyAQeMQ6m3hKwOqB12addz/view?usp=drive_link",
+            category: ["Океания", "Города"]
+        },
+        {
+            title: "Арктика",
+            imageUrl: "https://happylove.top/uploads/posts/2023-05/1683489819_happylove-top-p-granitsi-severnogo-ledovitogo-okeana-insta-61.jpg",
+            downloadUrl: "https://happylove.top/uploads/posts/2023-05/1683489819_happylove-top-p-granitsi-severnogo-ledovitogo-okeana-insta-61.jpg",
+            category: ["Океаны"]
+        },
+        {
+            title: "",
+            imageUrl: "",
+            downloadUrl: "",
+            category: ["Азия", "Города"]
+        },
+    ];
+
+    // Храним выбранные фильтры
+    let activeFilters = new Set();
+
+    function createMapCard(map) {
+        const card = document.createElement('div');
+        card.className = 'map-card';
+        card.innerHTML = `
+            <img src="${map.imageUrl}" width="800" height="600" class="map-preview">
+            <div class="map-info">
+                <h3 class="map-title">${map.title}</h3>
+                <a href="${map.downloadUrl}" class="download-btn" target="_blank" rel="noopener noreferrer">
+                    Скачать карту
+                </a>
+            </div>
+        `;
+        return card;
+    }
+
+    function renderMaps(maps = mapsDatabase) {
+        const mapsGrid = document.querySelector('.maps-grid');
+        mapsGrid.innerHTML = '';
+
+        // Если нет активных фильтров или выбран "Все", показываем все карты
+        if (activeFilters.size === 0 || activeFilters.has('all')) {
+            maps.forEach(map => {
+                mapsGrid.appendChild(createMapCard(map));
+            });
+        } else {
+            // Фильтруем карты по выбранным категориям
+            const filteredMaps = maps.filter(map => {
+                // Проверяем, есть ли хоть одна категория карты в активных фильтрах
+                return map.category.some(cat => activeFilters.has(cat));
+            });
+
+            filteredMaps.forEach(map => {
+                mapsGrid.appendChild(createMapCard(map));
+            });
+        }
+    }
+
+    function toggleFilter(category) {
+        const allBtn = document.querySelector('.filter-btn:not(.multiple)');
+
+        if (category === 'all') {
+            // Обработка кнопки "Все"
+            activeFilters.clear();
+            activeFilters.add('all');
+
+            // Сбрасываем все другие кнопки
+            document.querySelectorAll('.filter-btn.multiple').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            allBtn.classList.add('active');
+        } else {
+            // Убираем "Все" из активных фильтров
+            activeFilters.delete('all');
+            allBtn.classList.remove('active');
+
+            // Переключаем текущий фильтр
+            if (activeFilters.has(category)) {
+                activeFilters.delete(category);
+            } else {
+                activeFilters.add(category);
+            }
+
+            // Обновляем состояние кнопки
+            const btn = [...document.querySelectorAll('.filter-btn')]
+                .find(b => b.textContent.includes(category));
+            if (btn) btn.classList.toggle('active');
+
+            // Если нет активных фильтров, активируем "Все"
+            if (activeFilters.size === 0) {
+                activeFilters.add('all');
+                allBtn.classList.add('active');
+            }
+        }
+
+        renderMaps();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Инициализация - активна кнопка "Все"
+        activeFilters.add('all');
+        document.querySelector('.filter-btn:not(.multiple)').classList.add('active');
+        renderMaps();
+    });
+</script>
+</body>
+</html>
