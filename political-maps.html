@@ -1,1 +1,539 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Физические карты</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --text-light: #ecf0f1;
+            --text-dark: #2c3e50;
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Georgia', serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+            url('https://cdn1.ozone.ru/s3/multimedia-k/6063420032.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 2rem 1rem;
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .maps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .map-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .map-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .map-preview {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+
+        .map-info {
+            padding: 1rem;
+        }
+
+        .map-title {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .map-meta {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .download-btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            transition: background 0.3s;
+        }
+
+        .download-btn:hover {
+            background: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .maps-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 8px 16px;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            background: var(--primary-color);
+        }
+
+        .filter-btn.active {
+            background: var(--accent-color);
+            transform: scale(1.05);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .filter-btn.multiple {
+            position: relative;
+            padding-right: 16px;
+        }
+
+        .filter-btn.multiple::after {
+            content: "";
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: bold;
+        }
+
+        .filter-btn.multiple.active::after {
+            content: "";
+        }
+
+        .search-container {
+            margin: 15px 0;
+        }
+
+        #searchInput {
+            padding: 10px 15px;
+            border: 2px solid var(--secondary-color);
+            border-radius: 4px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        #searchInput:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 5px rgba(231, 76, 60, 0.5);
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Политические карты</h1>
+</header>
+<div class="container">
+    <div class="filters">
+        <button class="filter-btn" onclick="toggleFilter('all')">Все</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('Мир')">Мир</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('Европа')">Европа</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('Азия')">Азия</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('Северная Америка')">Северная Америка</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('Южная Америка')">Южная Америка</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('Океания')">Океания</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('Африка')">Африка</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('С городами')">С городами</button>
+    </div>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Поиск по названию...">
+    </div>
+    <div class="maps-grid"></div>
+</div>
+
+<script>
+    const mapsDatabase = [
+        {
+            title: "Мир 1444",
+            imageUrl: "https://lh3.googleusercontent.com/d/1saeZm8XVoAdY1yyWOeppGbgwr6f4znqB",
+            downloadUrl: "https://drive.google.com/file/d/1saeZm8XVoAdY1yyWOeppGbgwr6f4znqB/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1444",
+            imageUrl: "https://lh3.googleusercontent.com/d/151FALo6WsTPHWjSz-WTrcO2OWLq2lQwA",
+            downloadUrl: "https://drive.google.com/file/d/151FALo6WsTPHWjSz-WTrcO2OWLq2lQwA/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1683",
+            imageUrl: "https://lh3.googleusercontent.com/d/1D1h2xp3KrMhU12Ips7YaF4tYr6-BdCTs",
+            downloadUrl: "https://drive.google.com/file/d/1D1h2xp3KrMhU12Ips7YaF4tYr6-BdCTs/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1721",
+            imageUrl: "https://lh3.googleusercontent.com/d/11WMlCQ2eD_MRJyIB4jgEGtdX9dMZTpgg",
+            downloadUrl: "https://drive.google.com/file/d/11WMlCQ2eD_MRJyIB4jgEGtdX9dMZTpgg/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1756",
+            imageUrl: "https://lh3.googleusercontent.com/d/19KzwWSG6JhBJtajN3Xw8fq6Cpl8e4uKB",
+            downloadUrl: "https://drive.google.com/file/d/19KzwWSG6JhBJtajN3Xw8fq6Cpl8e4uKB/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1775",
+            imageUrl: "https://lh3.googleusercontent.com/d/1eT9mc1mgCQOhvkJQX3GJJOyzBuzHzxhl",
+            downloadUrl: "https://drive.google.com/file/d/1eT9mc1mgCQOhvkJQX3GJJOyzBuzHzxhl/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1792",
+            imageUrl: "https://lh3.googleusercontent.com/d/1Aj8jPE3fUgVFaqdJzNqkev0FdgnA9l3k",
+            downloadUrl: "https://drive.google.com/file/d/1Aj8jPE3fUgVFaqdJzNqkev0FdgnA9l3k/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1812",
+            imageUrl: "https://lh3.googleusercontent.com/d/1m2hvLy8EXd-rsrDt5LTvMIy-kpOXnETr",
+            downloadUrl: "https://drive.google.com/file/d/1m2hvLy8EXd-rsrDt5LTvMIy-kpOXnETr/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1815",
+            imageUrl: "https://lh3.googleusercontent.com/d/1UtxajCQt1ZHo_rlJB4U0rysofQoLTt7J",
+            downloadUrl: "https://drive.google.com/file/d/1UtxajCQt1ZHo_rlJB4U0rysofQoLTt7J/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1848",
+            imageUrl: "https://lh3.googleusercontent.com/d/1jw9yyzLmombjlf1AmnlUecVoeZb6dWna",
+            downloadUrl: "https://drive.google.com/file/d/1jw9yyzLmombjlf1AmnlUecVoeZb6dWna/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1870",
+            imageUrl: "https://lh3.googleusercontent.com/d/1L2rtNtJQ2apu6WMUYH-e7liYLfUpr6i9",
+            downloadUrl: "https://drive.google.com/file/d/1L2rtNtJQ2apu6WMUYH-e7liYLfUpr6i9/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1910",
+            imageUrl: "https://lh3.googleusercontent.com/d/1VoqL7UJ5eot7PpyzdKuHLuWGt-Q0XM5W",
+            downloadUrl: "https://drive.google.com/file/d/1VoqL7UJ5eot7PpyzdKuHLuWGt-Q0XM5W/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1912",
+            imageUrl: "https://lh3.googleusercontent.com/d/1tgqqP3GiM-_6-iEAevUnZblKaMzr8wg1",
+            downloadUrl: "https://drive.google.com/file/d/1tgqqP3GiM-_6-iEAevUnZblKaMzr8wg1/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1914",
+            imageUrl: "https://lh3.googleusercontent.com/d/1NFVAUvT3xuWTc-5u_xoMKZsIzhiwPaZa",
+            downloadUrl: "https://drive.google.com/file/d/1NFVAUvT3xuWTc-5u_xoMKZsIzhiwPaZa/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1930",
+            imageUrl: "https://lh3.googleusercontent.com/d/14lqGjYxFsD-dR4yEpRgjyVhAB5u6xYYG",
+            downloadUrl: "https://drive.google.com/file/d/14lqGjYxFsD-dR4yEpRgjyVhAB5u6xYYG/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1936",
+            imageUrl: "https://lh3.googleusercontent.com/d/1Jht3F3xBlE5sh-1f598a9JDWime9ROou",
+            downloadUrl: "https://drive.google.com/file/d/1Jht3F3xBlE5sh-1f598a9JDWime9ROou/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1936",
+            imageUrl: "https://lh3.googleusercontent.com/d/1DV43zjyCnAwp1F54azohXkcTLGE-5q25",
+            downloadUrl: "https://drive.google.com/file/d/1DV43zjyCnAwp1F54azohXkcTLGE-5q25/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1939-09-01",
+            imageUrl: "https://lh3.googleusercontent.com/d/1pgYth-7tCvvAvghYBvS1xPQbZDRJnOMk",
+            downloadUrl: "https://drive.google.com/file/d/1pgYth-7tCvvAvghYBvS1xPQbZDRJnOMk/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1939-10-12",
+            imageUrl: "https://lh3.googleusercontent.com/d/1BOmfG08LNpLo3UF3ZOUuS9UdOLYT0uSd",
+            downloadUrl: "https://drive.google.com/file/d/1BOmfG08LNpLo3UF3ZOUuS9UdOLYT0uSd/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1940-06-25",
+            imageUrl: "https://lh3.googleusercontent.com/d/1Yp5WtpTSXSlrj42pzoanuoRbQoh93fGP",
+            downloadUrl: "https://drive.google.com/file/d/1Yp5WtpTSXSlrj42pzoanuoRbQoh93fGP/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1941-05-23",
+            imageUrl: "https://lh3.googleusercontent.com/d/1KjPAW0zKqucz3JIK8rkDdWR5i07B40mr",
+            downloadUrl: "https://drive.google.com/file/d/1KjPAW0zKqucz3JIK8rkDdWR5i07B40mr/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1941",
+            imageUrl: "https://lh3.googleusercontent.com/d/1Fr2r53Y3Hesg86-b6uZRMxKy9PEoP1dj",
+            downloadUrl: "https://drive.google.com/file/d/1Fr2r53Y3Hesg86-b6uZRMxKy9PEoP1dj/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1942-10-31",
+            imageUrl: "https://lh3.googleusercontent.com/d/1K_ec8Lb_kaPZmbTHLkHcoU4psiGsTnPH",
+            downloadUrl: "https://drive.google.com/file/d/1K_ec8Lb_kaPZmbTHLkHcoU4psiGsTnPH/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1945",
+            imageUrl: "https://lh3.googleusercontent.com/d/1FKxSx4oBZwy7tw1fXxjVXbuJBiyxNfJP",
+            downloadUrl: "https://drive.google.com/file/d/1FKxSx4oBZwy7tw1fXxjVXbuJBiyxNfJP/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1949",
+            imageUrl: "https://lh3.googleusercontent.com/d/1KPgH5u8GQ3aQEKJRU6kRjL4VTdwbQRj2",
+            downloadUrl: "https://drive.google.com/file/d/1KPgH5u8GQ3aQEKJRU6kRjL4VTdwbQRj2/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1956",
+            imageUrl: "https://lh3.googleusercontent.com/d/1yfBENfxaRhiqY3VU5Gw0plzaNsKsRUqC",
+            downloadUrl: "https://drive.google.com/file/d/1yfBENfxaRhiqY3VU5Gw0plzaNsKsRUqC/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1973",
+            imageUrl: "https://lh3.googleusercontent.com/d/17OBdpU3s8oYyM6EWg6EMnFfgsg0Nn5VC",
+            downloadUrl: "https://drive.google.com/file/d/17OBdpU3s8oYyM6EWg6EMnFfgsg0Nn5VC/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1980",
+            imageUrl: "https://lh3.googleusercontent.com/d/1nkAy-TuRTYvkuxdZST_nPdLb34eoeUNo",
+            downloadUrl: "https://drive.google.com/file/d/1nkAy-TuRTYvkuxdZST_nPdLb34eoeUNo/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1990",
+            imageUrl: "https://lh3.googleusercontent.com/d/1NbGZeA_sPGrXgdfvicSicszMHoopaXt9",
+            downloadUrl: "https://drive.google.com/file/d/1NbGZeA_sPGrXgdfvicSicszMHoopaXt9/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 2008",
+            imageUrl: "https://lh3.googleusercontent.com/d/1dtGKPRezbd4Ki-xgkCkHVLadJHGZlFYF",
+            downloadUrl: "https://drive.google.com/file/d/1dtGKPRezbd4Ki-xgkCkHVLadJHGZlFYF/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 2014",
+            imageUrl: "https://lh3.googleusercontent.com/d/10Z1aiA09zieDTB10xVO60t7ZAdXKTXLz",
+            downloadUrl: "https://drive.google.com/file/d/10Z1aiA09zieDTB10xVO60t7ZAdXKTXLz/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 2020",
+            imageUrl: "https://lh3.googleusercontent.com/d/1xATSe5gBqnmqHuxO-BXL6YPkiHOdLFFi",
+            downloadUrl: "https://drive.google.com/file/d/1xATSe5gBqnmqHuxO-BXL6YPkiHOdLFFi/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 2020",
+            imageUrl: "https://lh3.googleusercontent.com/d/1KOCbjPBzzQ-DtspRhOzn89q82HdTkpG4",
+            downloadUrl: "https://drive.google.com/file/d/1KOCbjPBzzQ-DtspRhOzn89q82HdTkpG4/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 2020",
+            imageUrl: "https://lh3.googleusercontent.com/d/1lqTiMuBrT2rCiRu9XoCbBeC8ia4DpQpw",
+            downloadUrl: "https://drive.google.com/file/d/1lqTiMuBrT2rCiRu9XoCbBeC8ia4DpQpw/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 2021",
+            imageUrl: "https://lh3.googleusercontent.com/d/1oH34O0NPKRILHniTlLkD7zTBMdayOypn",
+            downloadUrl: "https://drive.google.com/file/d/1oH34O0NPKRILHniTlLkD7zTBMdayOypn/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 2023",
+            imageUrl: "https://lh3.googleusercontent.com/d/1p-nMFe_eSBazFC3-iwEspzS0aGKaMG5R",
+            downloadUrl: "https://drive.google.com/file/d/1p-nMFe_eSBazFC3-iwEspzS0aGKaMG5R/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 21 век",
+            imageUrl: "https://lh3.googleusercontent.com/d/1BeIEvhHFZGq_6LlShNnsjyp5dPbPFOuO",
+            downloadUrl: "https://drive.google.com/file/d/1BeIEvhHFZGq_6LlShNnsjyp5dPbPFOuO/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 21 век",
+            imageUrl: "https://lh3.googleusercontent.com/d/1EUX-to5VnGXj13ZeAp6lNLatLrCwsmlm",
+            downloadUrl: "https://drive.google.com/file/d/1EUX-to5VnGXj13ZeAp6lNLatLrCwsmlm/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 21 век",
+            imageUrl: "https://lh3.googleusercontent.com/d/15cX-bvQXl-JmJgGizj_uP7CjKHUitlyB",
+            downloadUrl: "https://drive.google.com/file/d/15cX-bvQXl-JmJgGizj_uP7CjKHUitlyB/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир",
+            imageUrl: "https://lh3.googleusercontent.com/d/",
+            downloadUrl: "",
+            category: ["Мир"]
+        },
+    ];
+
+    let activeFilters = new Set();
+
+    // Создание карточки карты
+    function createMapCard(map) {
+        const card = document.createElement('div');
+        card.className = 'map-card';
+        card.innerHTML = `
+            <img src="${map.imageUrl}" width="800" height="600" class="map-preview">
+            <div class="map-info">
+                <h3 class="map-title">${map.title}</h3>
+                <a href="${map.downloadUrl}" class="download-btn" target="_blank" rel="noopener noreferrer">
+                    Скачать карту
+                </a>
+            </div>
+        `;
+        return card;
+    }
+
+    // Функция поиска по карточкам
+    function searchMaps() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const filteredMaps = mapsDatabase.filter(map => {
+            return map.title.toLowerCase().includes(searchTerm);
+        });
+        renderMaps(filteredMaps);
+    }
+
+    // Функция отрисовки карточек
+    function renderMaps(maps = mapsDatabase) {
+        const mapsGrid = document.querySelector('.maps-grid');
+        mapsGrid.innerHTML = '';
+
+        let filteredMaps = [...maps];
+
+        if (activeFilters.size > 0 && !activeFilters.has('all')) {
+            filteredMaps = filteredMaps.filter(map => {
+                return map.category.some(cat => activeFilters.has(cat));
+            });
+        }
+
+        if (filteredMaps.length === 0) {
+            mapsGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center;">Ничего не найдено</p>';
+        } else {
+            filteredMaps.forEach(map => {
+                mapsGrid.appendChild(createMapCard(map));
+            });
+        }
+    }
+
+    // Функция переключения фильтров
+    function toggleFilter(category) {
+        const allBtn = document.querySelector('.filter-btn:not(.multiple)');
+
+        if (category === 'all') {
+            activeFilters.clear();
+            activeFilters.add('all');
+            document.querySelectorAll('.filter-btn.multiple').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            allBtn.classList.add('active');
+        } else {
+            activeFilters.delete('all');
+            allBtn.classList.remove('active');
+
+            if (activeFilters.has(category)) {
+                activeFilters.delete(category);
+            } else {
+                activeFilters.add(category);
+            }
+
+            const btn = [...document.querySelectorAll('.filter-btn')]
+                .find(b => b.textContent === category); // Исправлено сравнение
+            if (btn) btn.classList.toggle('active');
+
+            if (activeFilters.size === 0) {
+                activeFilters.add('all');
+                allBtn.classList.add('active');
+            }
+        }
+
+        renderMaps();
+    }
+
+    // Инициализация при загрузке страницы
+    document.addEventListener('DOMContentLoaded', () => {
+        activeFilters.add('all');
+        document.querySelector('.filter-btn:not(.multiple)').classList.add('active');
+        
+        // Добавлен обработчик для поиска
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', searchMaps);
+        }
+        renderMaps();
+    });
+</script>
+</body>
+</html>
