@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Коллекция карт</title>
+    <title>Физические карты</title>
     <style>
         :root {
             --primary-color: #2c3e50;
@@ -151,12 +151,31 @@
         .filter-btn.multiple.active::after {
             content: "";
         }
+
+        .search-container {
+            margin: 15px 0;
+        }
+
+        #searchInput {
+            padding: 10px 15px;
+            border: 2px solid var(--secondary-color);
+            border-radius: 4px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        #searchInput:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 5px rgba(231, 76, 60, 0.5);
+        }
     </style>
 </head>
 <body>
 <header>
-    <h1>Коллекция карт</h1>
-    <p>Исторические и современные географические карты</p>
+    <h1>Физические карты</h1>
 </header>
 <div class="container">
     <div class="filters">
@@ -164,12 +183,16 @@
         <button class="filter-btn multiple" onclick="toggleFilter('Мир')">Мир</button>
         <button class="filter-btn multiple" onclick="toggleFilter('Европа')">Европа</button>
         <button class="filter-btn multiple" onclick="toggleFilter('Азия')">Азия</button>
-        <button class="filter-btn multiple" onclick="toggleFilter('СевернаяАмерика')">Северная Америка</button>
-        <button class="filter-btn multiple" onclick="toggleFilter('ЮжнаяАмерика')">Южная Америка</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('Северная Америка')">Северная Америка</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('Южная Америка')">Южная Америка</button>
         <button class="filter-btn multiple" onclick="toggleFilter('Океания')">Океания</button>
         <button class="filter-btn multiple" onclick="toggleFilter('Африка')">Африка</button>
         <button class="filter-btn multiple" onclick="toggleFilter('Полюса')">Полюса</button>
-        <button class="filter-btn multiple" onclick="toggleFilter('Города')">С городами</button>
+        <button class="filter-btn multiple" onclick="toggleFilter('С городами')">С городами</button>
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Поиск по названию...">
     </div>
 
     <div class="maps-grid"></div>
@@ -187,7 +210,7 @@
             title: "Мир",
             imageUrl: "https://ic.pics.livejournal.com/afework/13390797/79202/79202_original.jpg",
             downloadUrl: "https://ic.pics.livejournal.com/afework/13390797/79202/79202_original.jpg",
-            category: ["Мир", "Города"]
+            category: ["Мир", "С городами"]
         },
         {
             title: "Центральная Африка",
@@ -217,7 +240,7 @@
             title: "Северная Америка",
             imageUrl: "https://lh3.googleusercontent.com/d/16zJtoHGFVBcxGXADMokYLJl8zQv_Yt-v",
             downloadUrl: "https://drive.google.com/file/d/16zJtoHGFVBcxGXADMokYLJl8zQv_Yt-v/view?usp=drive_link",
-            category: ["СевернаяАмерика"]
+            category: ["Северная Америка"]
         },
         {
             title: "Мир",
@@ -233,21 +256,15 @@
         },
         {
             title: "Антарктида",
-            imageUrl: "https://lh3.googleusercontent.com/d/1YlWiUkYLAUPq8VSmoabg3SlNcBuNlq7_",
-            downloadUrl: "https://drive.google.com/file/d/1YlWiUkYLAUPq8VSmoabg3SlNcBuNlq7_/view?usp=drive_link",
-            category: ["Полюса"]
-        },
-        {
-            title: "Антарктида",
             imageUrl: "https://lh3.googleusercontent.com/d/1jjSpkT-ITHrO2g5G1jn8eB2__eRP6mZ7",
             downloadUrl: "https://drive.google.com/file/d/1jjSpkT-ITHrO2g5G1jn8eB2__eRP6mZ7/view?usp=drive_link",
             category: ["Полюса"]
         },
     ];
 
-    // Храним выбранные фильтры
     let activeFilters = new Set();
 
+    // Создание карточки карты
     function createMapCard(map) {
         const card = document.createElement('div');
         card.className = 'map-card';
@@ -263,60 +280,62 @@
         return card;
     }
 
+    // Функция поиска по карточкам
+    function searchMaps() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const filteredMaps = mapsDatabase.filter(map => {
+            return map.title.toLowerCase().includes(searchTerm);
+        });
+        renderMaps(filteredMaps);
+    }
+
+    // Функция отрисовки карточек
     function renderMaps(maps = mapsDatabase) {
         const mapsGrid = document.querySelector('.maps-grid');
         mapsGrid.innerHTML = '';
 
-        // Если нет активных фильтров или выбран "Все", показываем все карты
-        if (activeFilters.size === 0 || activeFilters.has('all')) {
-            maps.forEach(map => {
-                mapsGrid.appendChild(createMapCard(map));
-            });
-        } else {
-            // Фильтруем карты по выбранным категориям
-            const filteredMaps = maps.filter(map => {
-                // Проверяем, есть ли хоть одна категория карты в активных фильтрах
+        let filteredMaps = [...maps];
+
+        if (activeFilters.size > 0 && !activeFilters.has('all')) {
+            filteredMaps = filteredMaps.filter(map => {
                 return map.category.some(cat => activeFilters.has(cat));
             });
+        }
 
+        if (filteredMaps.length === 0) {
+            mapsGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center;">Ничего не найдено</p>';
+        } else {
             filteredMaps.forEach(map => {
                 mapsGrid.appendChild(createMapCard(map));
             });
         }
     }
 
+    // Функция переключения фильтров
     function toggleFilter(category) {
         const allBtn = document.querySelector('.filter-btn:not(.multiple)');
 
         if (category === 'all') {
-            // Обработка кнопки "Все"
             activeFilters.clear();
             activeFilters.add('all');
-
-            // Сбрасываем все другие кнопки
             document.querySelectorAll('.filter-btn.multiple').forEach(btn => {
                 btn.classList.remove('active');
             });
-
             allBtn.classList.add('active');
         } else {
-            // Убираем "Все" из активных фильтров
             activeFilters.delete('all');
             allBtn.classList.remove('active');
 
-            // Переключаем текущий фильтр
             if (activeFilters.has(category)) {
                 activeFilters.delete(category);
             } else {
                 activeFilters.add(category);
             }
 
-            // Обновляем состояние кнопки
             const btn = [...document.querySelectorAll('.filter-btn')]
-                .find(b => b.textContent.includes(category));
+                .find(b => b.textContent === category); // Исправлено сравнение
             if (btn) btn.classList.toggle('active');
 
-            // Если нет активных фильтров, активируем "Все"
             if (activeFilters.size === 0) {
                 activeFilters.add('all');
                 allBtn.classList.add('active');
@@ -326,10 +345,16 @@
         renderMaps();
     }
 
+    // Инициализация при загрузке страницы
     document.addEventListener('DOMContentLoaded', () => {
-        // Инициализация - активна кнопка "Все"
         activeFilters.add('all');
         document.querySelector('.filter-btn:not(.multiple)').classList.add('active');
+        
+        // Добавлен обработчик для поиска
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', searchMaps);
+        }
         renderMaps();
     });
 </script>
