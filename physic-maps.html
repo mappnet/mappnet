@@ -175,7 +175,7 @@
 </head>
 <body>
 <header>
-    <h1>Физические карты</h1>
+    <h1>Политические карты</h1>
 </header>
 <div class="container">
     <div class="filters">
@@ -187,78 +187,255 @@
         <button class="filter-btn multiple" onclick="toggleFilter('Южная Америка')">Южная Америка</button>
         <button class="filter-btn multiple" onclick="toggleFilter('Океания')">Океания</button>
         <button class="filter-btn multiple" onclick="toggleFilter('Африка')">Африка</button>
-        <button class="filter-btn multiple" onclick="toggleFilter('Полюса')">Полюса</button>
         <button class="filter-btn multiple" onclick="toggleFilter('С городами')">С городами</button>
     </div>
-
     <div class="search-container">
         <input type="text" id="searchInput" placeholder="Поиск по названию...">
     </div>
-
     <div class="maps-grid"></div>
 </div>
 
 <script>
     const mapsDatabase = [
         {
-            title: "Европа",
-            imageUrl: "https://lh3.googleusercontent.com/d/1Tic6VCwvy8LdseaiwJBLv3Pl8MgOc_4a",
-            downloadUrl: "https://drive.google.com/file/d/1Tic6VCwvy8LdseaiwJBLv3Pl8MgOc_4a/view?usp=drive_link",
-            category: ["Европа"]
-        },
-        {
-            title: "Мир",
-            imageUrl: "https://ic.pics.livejournal.com/afework/13390797/79202/79202_original.jpg",
-            downloadUrl: "https://ic.pics.livejournal.com/afework/13390797/79202/79202_original.jpg",
-            category: ["Мир", "С городами"]
-        },
-        {
-            title: "Центральная Африка",
-            imageUrl: "https://esdac.jrc.ec.europa.eu/images/Eudasm/Africa/images/maps/download/afr_pgrwma.jpg",
-            downloadUrl: "https://esdac.jrc.ec.europa.eu/images/Eudasm/Africa/images/maps/download/afr_pgrwma.jpg",
-            category: ["Африка"]
-        },
-        {
-            title: "Мир",
-            imageUrl: "https://i.pinimg.com/originals/b9/eb/43/b9eb43b9e61d4516640a013b3399fb22.jpg",
-            downloadUrl: "https://i.pinimg.com/originals/b9/eb/43/b9eb43b9e61d4516640a013b3399fb22.jpg",
+            title: "Мир 1444",
+            imageUrl: "https://lh3.googleusercontent.com/d/1saeZm8XVoAdY1yyWOeppGbgwr6f4znqB",
+            downloadUrl: "https://drive.google.com/file/d/1saeZm8XVoAdY1yyWOeppGbgwr6f4znqB/view?usp=drive_link",
             category: ["Мир"]
         },
         {
-            title: "Европа",
-            imageUrl: "https://lh3.googleusercontent.com/d/1HH0rP672N5S1VnV1qsR9UtY3EBhB_ngl",
-            downloadUrl: "https://drive.google.com/file/d/1HH0rP672N5S1VnV1qsR9UtY3EBhB_ngl/view?usp=drive_link",
-            category: ["Европа"]
-        },
-        {
-            title: "Ближний Восток",
-            imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Middle_East_topographic_map-blank.svg/3097px-Middle_East_topographic_map-blank.svg.png",
-            downloadUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Middle_East_topographic_map-blank.svg/3097px-Middle_East_topographic_map-blank.svg.png",
-            category: ["Азия"]
-        },
-        {
-            title: "Северная Америка",
-            imageUrl: "https://lh3.googleusercontent.com/d/16zJtoHGFVBcxGXADMokYLJl8zQv_Yt-v",
-            downloadUrl: "https://drive.google.com/file/d/16zJtoHGFVBcxGXADMokYLJl8zQv_Yt-v/view?usp=drive_link",
-            category: ["Северная Америка"]
-        },
-        {
-            title: "Мир",
-            imageUrl: "https://lh3.googleusercontent.com/d/1EqW3Nk4GptVzBEv3KqfGjQrWFMZHe5ku",
-            downloadUrl: "https://drive.google.com/file/d/1EqW3Nk4GptVzBEv3KqfGjQrWFMZHe5ku/view?usp=drive_link",
+            title: "Мир 1444",
+            imageUrl: "https://lh3.googleusercontent.com/d/151FALo6WsTPHWjSz-WTrcO2OWLq2lQwA",
+            downloadUrl: "https://drive.google.com/file/d/151FALo6WsTPHWjSz-WTrcO2OWLq2lQwA/view?usp=drive_link",
             category: ["Мир"]
         },
         {
-            title: "Балтика",
-            imageUrl: "https://lh3.googleusercontent.com/d/1XipmVdbDKG6SR4hW1yVTWFP1gWLL2Te_",
-            downloadUrl: "https://drive.google.com/file/d/1XipmVdbDKG6SR4hW1yVTWFP1gWLL2Te_/view?usp=drive_link",
-            category: ["Европа"]
+            title: "Мир 1683",
+            imageUrl: "https://lh3.googleusercontent.com/d/1D1h2xp3KrMhU12Ips7YaF4tYr6-BdCTs",
+            downloadUrl: "https://drive.google.com/file/d/1D1h2xp3KrMhU12Ips7YaF4tYr6-BdCTs/view?usp=drive_link",
+            category: ["Мир"]
         },
         {
-            title: "Антарктида",
-            imageUrl: "https://lh3.googleusercontent.com/d/1jjSpkT-ITHrO2g5G1jn8eB2__eRP6mZ7",
-            downloadUrl: "https://drive.google.com/file/d/1jjSpkT-ITHrO2g5G1jn8eB2__eRP6mZ7/view?usp=drive_link",
-            category: ["Полюса"]
+            title: "Мир 1721",
+            imageUrl: "https://lh3.googleusercontent.com/d/11WMlCQ2eD_MRJyIB4jgEGtdX9dMZTpgg",
+            downloadUrl: "https://drive.google.com/file/d/11WMlCQ2eD_MRJyIB4jgEGtdX9dMZTpgg/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1756",
+            imageUrl: "https://lh3.googleusercontent.com/d/19KzwWSG6JhBJtajN3Xw8fq6Cpl8e4uKB",
+            downloadUrl: "https://drive.google.com/file/d/19KzwWSG6JhBJtajN3Xw8fq6Cpl8e4uKB/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1775",
+            imageUrl: "https://lh3.googleusercontent.com/d/1eT9mc1mgCQOhvkJQX3GJJOyzBuzHzxhl",
+            downloadUrl: "https://drive.google.com/file/d/1eT9mc1mgCQOhvkJQX3GJJOyzBuzHzxhl/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1792",
+            imageUrl: "https://lh3.googleusercontent.com/d/1Aj8jPE3fUgVFaqdJzNqkev0FdgnA9l3k",
+            downloadUrl: "https://drive.google.com/file/d/1Aj8jPE3fUgVFaqdJzNqkev0FdgnA9l3k/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1812",
+            imageUrl: "https://lh3.googleusercontent.com/d/1m2hvLy8EXd-rsrDt5LTvMIy-kpOXnETr",
+            downloadUrl: "https://drive.google.com/file/d/1m2hvLy8EXd-rsrDt5LTvMIy-kpOXnETr/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1815",
+            imageUrl: "https://lh3.googleusercontent.com/d/1UtxajCQt1ZHo_rlJB4U0rysofQoLTt7J",
+            downloadUrl: "https://drive.google.com/file/d/1UtxajCQt1ZHo_rlJB4U0rysofQoLTt7J/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1848",
+            imageUrl: "https://lh3.googleusercontent.com/d/1jw9yyzLmombjlf1AmnlUecVoeZb6dWna",
+            downloadUrl: "https://drive.google.com/file/d/1jw9yyzLmombjlf1AmnlUecVoeZb6dWna/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1870",
+            imageUrl: "https://lh3.googleusercontent.com/d/1L2rtNtJQ2apu6WMUYH-e7liYLfUpr6i9",
+            downloadUrl: "https://drive.google.com/file/d/1L2rtNtJQ2apu6WMUYH-e7liYLfUpr6i9/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1910",
+            imageUrl: "https://lh3.googleusercontent.com/d/1VoqL7UJ5eot7PpyzdKuHLuWGt-Q0XM5W",
+            downloadUrl: "https://drive.google.com/file/d/1VoqL7UJ5eot7PpyzdKuHLuWGt-Q0XM5W/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1912",
+            imageUrl: "https://lh3.googleusercontent.com/d/1tgqqP3GiM-_6-iEAevUnZblKaMzr8wg1",
+            downloadUrl: "https://drive.google.com/file/d/1tgqqP3GiM-_6-iEAevUnZblKaMzr8wg1/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1914",
+            imageUrl: "https://lh3.googleusercontent.com/d/1NFVAUvT3xuWTc-5u_xoMKZsIzhiwPaZa",
+            downloadUrl: "https://drive.google.com/file/d/1NFVAUvT3xuWTc-5u_xoMKZsIzhiwPaZa/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1930",
+            imageUrl: "https://lh3.googleusercontent.com/d/14lqGjYxFsD-dR4yEpRgjyVhAB5u6xYYG",
+            downloadUrl: "https://drive.google.com/file/d/14lqGjYxFsD-dR4yEpRgjyVhAB5u6xYYG/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1936",
+            imageUrl: "https://lh3.googleusercontent.com/d/1Jht3F3xBlE5sh-1f598a9JDWime9ROou",
+            downloadUrl: "https://drive.google.com/file/d/1Jht3F3xBlE5sh-1f598a9JDWime9ROou/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1936",
+            imageUrl: "https://lh3.googleusercontent.com/d/1DV43zjyCnAwp1F54azohXkcTLGE-5q25",
+            downloadUrl: "https://drive.google.com/file/d/1DV43zjyCnAwp1F54azohXkcTLGE-5q25/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1939-09-01",
+            imageUrl: "https://lh3.googleusercontent.com/d/1pgYth-7tCvvAvghYBvS1xPQbZDRJnOMk",
+            downloadUrl: "https://drive.google.com/file/d/1pgYth-7tCvvAvghYBvS1xPQbZDRJnOMk/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1939-10-12",
+            imageUrl: "https://lh3.googleusercontent.com/d/1BOmfG08LNpLo3UF3ZOUuS9UdOLYT0uSd",
+            downloadUrl: "https://drive.google.com/file/d/1BOmfG08LNpLo3UF3ZOUuS9UdOLYT0uSd/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1940-06-25",
+            imageUrl: "https://lh3.googleusercontent.com/d/1Yp5WtpTSXSlrj42pzoanuoRbQoh93fGP",
+            downloadUrl: "https://drive.google.com/file/d/1Yp5WtpTSXSlrj42pzoanuoRbQoh93fGP/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1941-05-23",
+            imageUrl: "https://lh3.googleusercontent.com/d/1KjPAW0zKqucz3JIK8rkDdWR5i07B40mr",
+            downloadUrl: "https://drive.google.com/file/d/1KjPAW0zKqucz3JIK8rkDdWR5i07B40mr/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1941",
+            imageUrl: "https://lh3.googleusercontent.com/d/1Fr2r53Y3Hesg86-b6uZRMxKy9PEoP1dj",
+            downloadUrl: "https://drive.google.com/file/d/1Fr2r53Y3Hesg86-b6uZRMxKy9PEoP1dj/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1942-10-31",
+            imageUrl: "https://lh3.googleusercontent.com/d/1K_ec8Lb_kaPZmbTHLkHcoU4psiGsTnPH",
+            downloadUrl: "https://drive.google.com/file/d/1K_ec8Lb_kaPZmbTHLkHcoU4psiGsTnPH/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1945",
+            imageUrl: "https://lh3.googleusercontent.com/d/1FKxSx4oBZwy7tw1fXxjVXbuJBiyxNfJP",
+            downloadUrl: "https://drive.google.com/file/d/1FKxSx4oBZwy7tw1fXxjVXbuJBiyxNfJP/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1949",
+            imageUrl: "https://lh3.googleusercontent.com/d/1KPgH5u8GQ3aQEKJRU6kRjL4VTdwbQRj2",
+            downloadUrl: "https://drive.google.com/file/d/1KPgH5u8GQ3aQEKJRU6kRjL4VTdwbQRj2/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1956",
+            imageUrl: "https://lh3.googleusercontent.com/d/1yfBENfxaRhiqY3VU5Gw0plzaNsKsRUqC",
+            downloadUrl: "https://drive.google.com/file/d/1yfBENfxaRhiqY3VU5Gw0plzaNsKsRUqC/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1973",
+            imageUrl: "https://lh3.googleusercontent.com/d/17OBdpU3s8oYyM6EWg6EMnFfgsg0Nn5VC",
+            downloadUrl: "https://drive.google.com/file/d/17OBdpU3s8oYyM6EWg6EMnFfgsg0Nn5VC/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1980",
+            imageUrl: "https://lh3.googleusercontent.com/d/1nkAy-TuRTYvkuxdZST_nPdLb34eoeUNo",
+            downloadUrl: "https://drive.google.com/file/d/1nkAy-TuRTYvkuxdZST_nPdLb34eoeUNo/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 1990",
+            imageUrl: "https://lh3.googleusercontent.com/d/1NbGZeA_sPGrXgdfvicSicszMHoopaXt9",
+            downloadUrl: "https://drive.google.com/file/d/1NbGZeA_sPGrXgdfvicSicszMHoopaXt9/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 2008",
+            imageUrl: "https://lh3.googleusercontent.com/d/1dtGKPRezbd4Ki-xgkCkHVLadJHGZlFYF",
+            downloadUrl: "https://drive.google.com/file/d/1dtGKPRezbd4Ki-xgkCkHVLadJHGZlFYF/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 2014",
+            imageUrl: "https://lh3.googleusercontent.com/d/10Z1aiA09zieDTB10xVO60t7ZAdXKTXLz",
+            downloadUrl: "https://drive.google.com/file/d/10Z1aiA09zieDTB10xVO60t7ZAdXKTXLz/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 2020",
+            imageUrl: "https://lh3.googleusercontent.com/d/1xATSe5gBqnmqHuxO-BXL6YPkiHOdLFFi",
+            downloadUrl: "https://drive.google.com/file/d/1xATSe5gBqnmqHuxO-BXL6YPkiHOdLFFi/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 2020",
+            imageUrl: "https://lh3.googleusercontent.com/d/1KOCbjPBzzQ-DtspRhOzn89q82HdTkpG4",
+            downloadUrl: "https://drive.google.com/file/d/1KOCbjPBzzQ-DtspRhOzn89q82HdTkpG4/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 2020",
+            imageUrl: "https://lh3.googleusercontent.com/d/1lqTiMuBrT2rCiRu9XoCbBeC8ia4DpQpw",
+            downloadUrl: "https://drive.google.com/file/d/1lqTiMuBrT2rCiRu9XoCbBeC8ia4DpQpw/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 2021",
+            imageUrl: "https://lh3.googleusercontent.com/d/1oH34O0NPKRILHniTlLkD7zTBMdayOypn",
+            downloadUrl: "https://drive.google.com/file/d/1oH34O0NPKRILHniTlLkD7zTBMdayOypn/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 2023",
+            imageUrl: "https://lh3.googleusercontent.com/d/1p-nMFe_eSBazFC3-iwEspzS0aGKaMG5R",
+            downloadUrl: "https://drive.google.com/file/d/1p-nMFe_eSBazFC3-iwEspzS0aGKaMG5R/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 21 век",
+            imageUrl: "https://lh3.googleusercontent.com/d/1BeIEvhHFZGq_6LlShNnsjyp5dPbPFOuO",
+            downloadUrl: "https://drive.google.com/file/d/1BeIEvhHFZGq_6LlShNnsjyp5dPbPFOuO/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 21 век",
+            imageUrl: "https://lh3.googleusercontent.com/d/1EUX-to5VnGXj13ZeAp6lNLatLrCwsmlm",
+            downloadUrl: "https://drive.google.com/file/d/1EUX-to5VnGXj13ZeAp6lNLatLrCwsmlm/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир 21 век",
+            imageUrl: "https://lh3.googleusercontent.com/d/15cX-bvQXl-JmJgGizj_uP7CjKHUitlyB",
+            downloadUrl: "https://drive.google.com/file/d/15cX-bvQXl-JmJgGizj_uP7CjKHUitlyB/view?usp=drive_link",
+            category: ["Мир"]
+        },
+        {
+            title: "Мир",
+            imageUrl: "https://lh3.googleusercontent.com/d/",
+            downloadUrl: "",
+            category: ["Мир"]
         },
     ];
 
