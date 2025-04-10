@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Горные системы мира</title>
     <style>
-        /* Все стили остаются без изменений */
         :root {
             --primary-color: #2c3e50;
             --secondary-color: #3498db;
@@ -101,6 +100,19 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
+        .sort-container {
+            margin-left: auto;
+        }
+
+        #sortSelect {
+            padding: 8px 16px;
+            border: 2px solid var(--mountain-color);
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: white;
+            cursor: pointer;
+        }
+
         .mountains-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -186,6 +198,16 @@
             h1 {
                 font-size: 2rem;
             }
+            
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .sort-container {
+                margin-left: 0;
+                margin-top: 10px;
+            }
         }
     </style>
 </head>
@@ -205,6 +227,16 @@
                 <button class="filter-btn" onclick="toggleFilter('Америка', this)">Америка</button>
                 <button class="filter-btn" onclick="toggleFilter('Африка', this)">Африка</button>
                 <button class="filter-btn" onclick="toggleFilter('Океания', this)">Океания</button>
+            </div>
+            <div class="sort-container">
+                <select id="sortSelect" onchange="applySort()">
+                    <option value="name-asc">По названию (А-Я)</option>
+                    <option value="name-desc">По названию (Я-А)</option>
+                    <option value="height-asc">По высоте (↑)</option>
+                    <option value="height-desc">По высоте (↓)</option>
+                    <option value="length-asc">По длине (↑)</option>
+                    <option value="length-desc">По длине (↓)</option>
+                </select>
             </div>
         </div>
 
@@ -229,6 +261,7 @@
                 description: "Высочайшая горная система Земли, расположенная между Тибетским нагорьем и Индо-Гангской равниной.",
             },
             {
+                id: "ands",
                 name: "Анды",
                 image: "https://pic.rutubelist.ru/video/5b/b8/5bb83a77ec44b493b31609cd7feed3fd.jpg",
                 continent: "Америка",
@@ -238,6 +271,7 @@
                 description: "Самая длинная горная цепь в мире, протянувшаяся вдоль западного побережья Южной Америки.",
             },
             {
+                id: "alps",
                 name: "Альпы",
                 image: "https://img.goodfon.com/original/2732x1536/9/8a/ushchele-doroga-domik-gory.jpg",
                 continent: "Евразия",
@@ -247,6 +281,7 @@
                 description: "Важнейший климатический барьер Европы, популярное место туризма и альпинизма.",
             },
             {
+                id: "atlas",
                 name: "Атлас",
                 image: "https://i.pinimg.com/originals/2a/c5/1a/2ac51a283010670619c161e38fa520ba.jpg",
                 continent: "Африка",
@@ -256,6 +291,7 @@
                 description: "Горная система на северо-западе Африки, отделяющая Средиземное море от Сахары.",
             },
             {
+                id: "big_water_hr",
                 name: "Большой Водораздельный хребет",
                 image: "https://img2.juzaphoto.com/001/shared_files/uploads/3025806_l.jpg",
                 continent: "Океания",
@@ -476,10 +512,21 @@
         // Переменные состояния
         let activeFilters = new Set(['all']);
         let currentMountains = [...mountainsDatabase];
+        let currentSort = 'name-asc';
 
-        // Функция сортировки по алфавиту
-        function sortMountainsAlphabetically(mountains) {
-            return [...mountains].sort((a, b) => a.name.localeCompare(b.name, 'ru'));
+        // Функции сортировки
+        const sortFunctions = {
+            'name-asc': (a, b) => a.name.localeCompare(b.name, 'ru'),
+            'name-desc': (a, b) => b.name.localeCompare(a.name, 'ru'),
+            'height-asc': (a, b) => a.height - b.height,
+            'height-desc': (a, b) => b.height - a.height,
+            'length-asc': (a, b) => a.length - b.length,
+            'length-desc': (a, b) => b.length - a.length
+        };
+
+        // Сортировка горных систем
+        function sortMountains(mountains) {
+            return [...mountains].sort(sortFunctions[currentSort]);
         }
 
         // Создание карточки горной системы
@@ -513,8 +560,8 @@
                 filtered = filtered.filter(m => activeFilters.has(m.continent));
             }
 
-            // Сортировка по алфавиту
-            filtered = sortMountainsAlphabetically(filtered);
+            // Сортировка
+            filtered = sortMountains(filtered);
 
             if (filtered.length === 0) {
                 container.innerHTML = '<p style="grid-column:1/-1; text-align:center;">Ничего не найдено</p>';
@@ -555,6 +602,12 @@
             renderMountains();
         }
 
+        // Применение сортировки
+        function applySort() {
+            currentSort = document.getElementById('sortSelect').value;
+            renderMountains();
+        }
+
         // Поиск по названию
         document.getElementById('searchInput').addEventListener('input', function() {
             const searchTerm = this.value.toLowerCase();
@@ -567,10 +620,11 @@
 
         // Инициализация страницы
         document.addEventListener('DOMContentLoaded', () => {
-            // Сортировка базы данных по алфавиту при загрузке
-            currentMountains = sortMountainsAlphabetically(mountainsDatabase);
+            // Сортировка базы данных при загрузке
+            currentMountains = sortMountains(mountainsDatabase);
             renderMountains();
         });
+
         function navigateToDetail(mountainId) {
             window.location.href = `${mountainId}.html`;
         }
