@@ -3,186 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Реки и озёра России</title>
+    <title>Водные ресурсы России</title>
     <style>
         :root {
             --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --accent-color: #e74c3c;
-            --text-light: #ecf0f1;
-            --text-dark: #2c3e50;
             --water-color: #1e88e5;
-            --filter-active: #e74c3c;
+            --text-light: #ecf0f1;
         }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Georgia', serif;
         }
-
         body {
             background-color: #f5f7fa;
-            color: var(--text-dark);
+            color: #2c3e50;
             line-height: 1.6;
         }
-
         header {
             background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-                        url('https://images.unsplash.com/photo-1439066615861-d1af74d74000?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+                        url('https://images.unsplash.com/photo-1439066615861-d1af74d74000');
             background-size: cover;
-            background-position: center;
             padding: 3rem 1rem;
             text-align: center;
             color: var(--text-light);
             margin-bottom: 2rem;
         }
-
         h1 {
             font-size: 2.8rem;
             margin-bottom: 1rem;
-            color: white;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 1rem;
+            padding: 2rem;
+            text-align: center;
         }
-
-        .controls {
+        .options {
             display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 2rem;
-            align-items: center;
-        }
-
-        .search-container {
-            flex-grow: 1;
-            min-width: 250px;
-        }
-
-        #searchInput {
-            width: 100%;
-            padding: 10px 15px;
-            border: 2px solid var(--water-color);
-            border-radius: 4px;
-            font-size: 16px;
-        }
-
-        .filters {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .filter-btn {
-            padding: 8px 16px;
-            background: var(--water-color);
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .filter-btn:hover {
-            background: #1565c0;
-        }
-
-        .filter-btn.active {
-            background: var(--filter-active);
-            transform: scale(1.05);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        .sort-container {
-            margin-left: auto;
-        }
-
-        #sortSelect {
-            padding: 8px 16px;
-            border: 2px solid var(--water-color);
-            border-radius: 4px;
-            font-size: 16px;
-            background-color: white;
-            cursor: pointer;
-        }
-
-        .water-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            justify-content: center;
             gap: 2rem;
-            margin-bottom: 3rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
         }
-
-        .water-card {
+        .option-card {
             background: white;
             border-radius: 8px;
-            overflow: hidden;
+            padding: 2rem;
+            width: 300px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             transition: transform 0.3s;
             border-top: 4px solid var(--water-color);
+            display: flex;
+            flex-direction: column;
         }
-
-        .water-card:hover {
+        .option-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
-
-        .water-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .water-info {
-            padding: 1.5rem;
-        }
-
-        .water-title {
+        .option-card h2 {
             color: var(--primary-color);
-            margin-bottom: 0.5rem;
-            font-size: 1.4rem;
-        }
-
-        .water-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
             margin-bottom: 1rem;
-            color: #666;
         }
-
-        .water-meta span {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .water-description {
+        .option-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 4px;
             margin-bottom: 1rem;
-            color: #555;
         }
-
-        .detail-btn {
+        .option-card p {
+            margin-bottom: 1.5rem; /* Добавленный интервал */
+            flex-grow: 1; /* Чтобы кнопка всегда была внизу */
+        }
+        .btn {
             display: inline-block;
-            padding: 8px 16px;
+            padding: 10px 20px;
             background: var(--water-color);
             color: white;
             text-decoration: none;
             border-radius: 4px;
             transition: background 0.3s;
+            margin-top: auto; /* Прижимаем кнопку к низу */
         }
-
-        .detail-btn:hover {
+        .btn:hover {
             background: #1565c0;
         }
-
         footer {
             text-align: center;
             padding: 2rem;
@@ -190,423 +98,33 @@
             color: white;
             margin-top: 3rem;
         }
-
-        @media (max-width: 768px) {
-            .water-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .controls {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .sort-container {
-                margin-left: 0;
-                margin-top: 10px;
-            }
-        }
     </style>
 </head>
 <body>
     <header>
-        <h1>Реки и озёра России</h1>
+        <h1>Водные ресурсы России</h1>
     </header>
 
     <div class="container">
-        <div class="controls">
-            <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Поиск по названию...">
+        <p>Исследуйте великие реки и озёра нашей страны</p>
+        
+        <div class="options">
+            <div class="option-card">
+                <img src="https://sun6-22.userapi.com/impf/Mv7LnN1QryVnM90t-JKUZ7spWcrjDRUxFV-7-Q/MBrjmiz_bws.jpg?size=960x639&quality=96&sign=9f5155cd4e22d162d6cd7e7392ed23b5&c_uniq_tag=GgR-iJSqS3NaWn4MdBBwz_BklWRjhRxZiOSwDWb8q88&type=album" alt="Реки">
+                <h2>Реки России</h2>
+                <a href="rivers.html" class="btn">Перейти к рекам</a>
             </div>
-            <div class="filters">
-                <button class="filter-btn active" onclick="toggleFilter('all', this)">Все</button>
-                <button class="filter-btn" onclick="toggleFilter('Река', this)">Реки</button>
-                <button class="filter-btn" onclick="toggleFilter('Озеро', this)">Озёра</button>
-                <button class="filter-btn" onclick="toggleFilter('Европейская часть', this)">Европейская часть</button>
-                <button class="filter-btn" onclick="toggleFilter('Сибирь', this)">Сибирь</button>
-                <button class="filter-btn" onclick="toggleFilter('Дальний Восток', this)">Дальний Восток</button>
-            </div>
-            <div class="sort-container">
-                <select id="sortSelect" onchange="applySort()">
-                    <option value="name-asc">По названию (А-Я)</option>
-                    <option value="name-desc">По названию (Я-А)</option>
-                    <option value="length-asc">По длине/глубине (↑)</option>
-                    <option value="length-desc">По длине/глубине (↓)</option>
-                </select>
+            
+            <div class="option-card">
+                <img src="https://yuxuda.az/uploads/news/yuxuda-gol_gormek.jpg" alt="Озёра">
+                <h2>Озёра России</h2>
+                <a href="lakes.html" class="btn">Перейти к озёрам</a>
             </div>
         </div>
-
-        <div class="water-grid" id="waterContainer"></div>
     </div>
 
     <footer>
-        <p>&copy; 2023 Гидрографический атлас России | Все права защищены</p>
+        <p>&copy; MapCatalog | Все права защищены</p>
     </footer>
-
-    <script>
-        // База данных рек и озёр
-        const waterDatabase = [
-            {
-                name: "Волга",
-                type: "Река",
-                region: "Европейская часть",
-                image: "https://geoglob.ru/wp-content/uploads/2022/10/samarskaya.webp",
-                length: 3530,
-                depth: 20,
-                basin: 1360000,
-                description: "Крупнейшая река Европы, впадает в Каспийское море. Имеет огромное экономическое значение для России."
-            },
-            {
-                name: "Дон",
-                type: "Река",
-                region: "Европейская часть",
-                image: "https://cdn.culture.ru/images/f2d28b30-9988-54d4-b1fb-582d0273a51d",
-                length: 1870,
-                depth: 15,
-                basin: 422000,
-                description: "Впадает в Азовское море. Известна по роману 'Тихий Дон' М.А. Шолохова."
-            },
-            {
-                name: "Обь",
-                type: "Река",
-                region: "Сибирь",
-                image: "https://pic.rutubelist.ru/video/b5/a8/b5a8cf9e9b8cc17e7eab9d2db3337118.jpg",
-                length: 3650,
-                depth: 25,
-                basin: 2990000,
-                description: "Образуется слиянием Бии и Катуни, впадает в Карское море. Одна из крупнейших рек мира."
-            },
-            {
-                name: "Иртыш",
-                type: "Река",
-                region: "Сибирь",
-                image: "https://multiurok.ru/img/1061828/image_65ef30cbab6e8.jpg",
-                length: 4248,
-                depth: 20,
-                basin: 1643000,
-                description: "Главный приток Оби, протекает через Китай, Казахстан и Россию. Самая длинная река-приток в мире."
-            },
-            {
-                name: "Лена",
-                type: "Река",
-                region: "Сибирь",
-                image: "https://avatars.dzeninfra.ru/get-zen_doc/5234524/pub_6357f829d15c90043960c13d_63581e766088d957a2180aaf/scale_1200",
-                length: 4400,
-                depth: 30,
-                basin: 2490000,
-                description: "Крупнейшая река Восточной Сибири, впадает в море Лаптевых. Известна Ленскими столбами."
-            },
-            {
-                name: "Енисей",
-                type: "Река",
-                region: "Сибирь",
-                image: "https://cdn.culture.ru/images/28954b9a-8640-5ac2-842f-655651750c8e",
-                length: 3487,
-                depth: 24,
-                basin: 2580000,
-                description: "Одна из крупнейших рек мира, впадает в Карское море. Разделяет Западную и Восточную Сибирь."
-            },
-            {
-                name: "Ангара",
-                type: "Река",
-                region: "Сибирь",
-                image: "https://vsegda-pomnim.com/uploads/posts/2022-03/1648672319_30-vsegda-pomnim-com-p-reka-angara-irkutsk-foto-36.jpg",
-                length: 1779,
-                depth: 6,
-                basin: 1039000,
-                description: "Единственная река, вытекающая из Байкала. На ней построены Братская и Усть-Илимская ГЭС."
-            },
-            {
-                name: "Байкал",
-                type: "Озеро",
-                region: "Сибирь",
-                image: "https://chitatravel.ru/img/news/360-ad5a7832759a58f19dcbe46014369653.jpg",
-                length: 636,
-                depth: 1642,
-                volume: 23600,
-                description: "Самое глубокое озеро на Земле, содержит 20% мировых запасов пресной воды. Уникальная экосистема."
-            },
-            {
-                name: "Ладожское озеро",
-                type: "Озеро",
-                region: "Европейская часть",
-                image: "https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_67584cb3d73c3175477d9f1e_67584cdbd890de4c610f9baf/scale_1200",
-                length: 219,
-                depth: 230,
-                volume: 908,
-                description: "Крупнейшее озеро Европы. В годы блокады через него проходила 'Дорога жизни' в Ленинград."
-            },
-            {
-                name: "Онежское озеро",
-                type: "Озеро",
-                region: "Европейская часть",
-                image: "https://udoba.org/sites/default/files/h5p/content/48747/images/image-63470594a099c.jpg",
-                length: 245,
-                depth: 127,
-                volume: 285,
-                description: "Второе по величине озеро Европы после Ладожского. На островах расположен музей-заповедник Кижи."
-            },
-            {
-                name: "Амур",
-                type: "Река",
-                region: "Дальний Восток",
-                image: "https://i.pinimg.com/originals/13/ed/08/13ed080c646d2cc26fe0d855a6bfd7a4.jpg",
-                length: 2824,
-                depth: 50,
-                basin: 1855000,
-                description: "Пограничная река между Россией и Китаем. Место обитания дальневосточных черепах и осетровых."
-            },
-            {
-                name: "Нева",
-                type: "Река",
-                region: "Европейская часть",
-                image: "https://i.jauns.lv/o/2019/03/13/1665525.jpg",
-                length: 74,
-                depth: 24,
-                basin: 281000,
-                description: "Вытекает из Ладожского озера, впадает в Финский залив. На ней стоит Санкт-Петербург."
-            },
-            {
-                name: "Кубань",
-                type: "Река",
-                region: "Европейская часть",
-                image: "https://feederist.ru/images/uploads/posts/2022-01/1642435870_69-pibig-info-p-reka-kuban-kubani-priroda-krasivo-foto-75.jpg",
-                length: 870,
-                depth: 12,
-                basin: 57900,
-                description: "Главная река Северного Кавказа, впадает в Азовское море. Важна для орошения рисовых чеков."
-            },
-            {
-                name: "Терек",
-                type: "Река",
-                region: "Европейская часть",
-                image: "https://cdn.culture.ru/images/ae69a8ed-277f-5016-b769-f8a37485cbcd",
-                length: 623,
-                depth: 16,
-                basin: 43200,
-                description: "Бурная горная река, берущая начало в ледниках Кавказа. Впадает в Каспийское море."
-            },
-            {
-                name: "Урал",
-                type: "Река",
-                region: "Европейская часть",
-                image: "https://i.pinimg.com/originals/c7/0b/d9/c70bd92c4ea879119bec3f6f61e10bfb.jpg",
-                length: 2428,
-                depth: 10,
-                basin: 231000,
-                description: "По реке проходит граница между Европой и Азией. В древности называлась Яик."
-            },
-            {
-                name: "Кама",
-                type: "Река",
-                region: "Европейская часть",
-                image: "https://s3.stc.all.kpcdn.net/russia/wp-content/uploads/2023/10/reka-kama-dlina.jpg",
-                length: 1805,
-                depth: 20,
-                basin: 507000,
-                description: "Крупнейший приток Волги. На Каме построен каскад водохранилищ и ГЭС."
-            },
-            {
-                name: "Ока",
-                type: "Река",
-                region: "Европейская часть",
-                image: "https://cont.ws/uploads/pic/2021/10/325454-svetik.jpg",
-                length: 1500,
-                depth: 10,
-                basin: 245000,
-                description: "Правый приток Волги. На Оке расположены города Орёл, Калуга, Рязань, Нижний Новгород."
-            },
-            {
-                name: "Северная Двина",
-                type: "Река",
-                region: "Европейская часть",
-                image: "https://cdn.culture.ru/images/74d87fb5-c6d4-50b7-b2c8-42f7f256cd3a",
-                length: 744,
-                depth: 14,
-                basin: 357000,
-                description: "Образуется слиянием Сухоны и Юга, впадает в Белое море. Исторически важный торговый путь."
-            },
-            {
-                name: "Печора",
-                type: "Река",
-                region: "Европейская часть",
-                image: "https://i.ytimg.com/vi/GZ5jogEslRc/maxresdefault.jpg",
-                length: 1809,
-                depth: 12,
-                basin: 322000,
-                description: "Крупная река на севере Европейской части, впадает в Баренцево море. Богата рыбой."
-            },
-            {
-                name: "Чудское озеро",
-                type: "Озеро",
-                region: "Европейская часть",
-                image: "https://photocentra.ru/images/main91/912924_main.jpg",
-                length: 96,
-                depth: 15,
-                volume: 25,
-                description: "На льду озера в 1242 году произошло Ледовое побоище. Граница между Россией и Эстонией."
-            },
-            {
-                name: "Телецкое озеро",
-                type: "Озеро",
-                region: "Сибирь",
-                image: "https://static.tildacdn.com/tild3932-6434-4439-b732-623130306661/imgpreview.jpg",
-                length: 78,
-                depth: 325,
-                volume: 40,
-                description: "Расположено в Алтайских горах. Второе по глубине озеро России после Байкала."
-            },
-            {
-                name: "Селигер",
-                type: "Озеро",
-                region: "Европейская часть",
-                image: "https://sea-law.ru/upload/iblock/a2a/0wdib2kpoyj09cw22d7yuf4mhm99hwub.jpg",
-                length: 66,
-                depth: 24,
-                volume: 1.3,
-                description: "Система озёр ледникового происхождения в Тверской области. Популярное место отдыха."
-            },
-            {
-                name: "Ханка",
-                type: "Озеро",
-                region: "Дальний Восток",
-                image: "https://bazaotdykha.ru/wp-content/uploads/2019/07/ozero-hanka-1.jpg",
-                length: 90,
-                depth: 10,
-                volume: 18,
-                description: "Крупнейшее озеро Дальнего Востока, граничит с Китаем. Место обитания многих редких птиц."
-            }
-        ];
-
-        // Переменные состояния
-        let activeFilters = new Set(['all']);
-        let currentWaters = [...waterDatabase];
-        let currentSort = 'name-asc';
-
-        // Функции сортировки
-        const sortFunctions = {
-            'name-asc': (a, b) => a.name.localeCompare(b.name, 'ru'),
-            'name-desc': (a, b) => b.name.localeCompare(a.name, 'ru'),
-            'length-asc': (a, b) => (a.length || a.depth) - (b.length || b.depth),
-            'length-desc': (a, b) => (b.length || b.depth) - (a.length || a.depth)
-        };
-
-        // Сортировка водоёмов
-        function sortWaters(waters) {
-            return [...waters].sort(sortFunctions[currentSort]);
-        }
-
-        // Создание карточки водоёма
-        function createWaterCard(water) {
-            const card = document.createElement('div');
-            card.className = 'water-card';
-            
-            const isRiver = water.type === 'Река';
-            const metaFields = isRiver ? 
-                `<span title="Длина">📏 ${water.length} км</span>
-                 <span title="Площадь бассейна">🌊 ${water.basin.toLocaleString()} км²</span>` :
-                `<span title="Глубина">⏬ ${water.depth} м</span>
-                 <span title="Объём">💧 ${water.volume ? water.volume.toLocaleString() + ' км³' : 'н/д'}</span>`;
-            
-            card.innerHTML = `
-                <img src="${water.image}" alt="${water.name}" class="water-image">
-                <div class="water-info">
-                    <h3 class="water-title">${water.name}</h3>
-                    <div class="water-meta">
-                        <span title="Тип">🏷 ${water.type}</span>
-                        <span title="Регион">📍 ${water.region}</span>
-                        ${metaFields}
-                    </div>
-                    <p class="water-description">${water.description}</p>
-                    <button class="detail-btn">Подробнее</button>
-                </div>
-            `;
-            return card;
-        }
-
-        // Фильтрация и отображение водоёмов
-        function renderWaters() {
-            const container = document.getElementById('waterContainer');
-            container.innerHTML = '';
-
-            // Фильтрация
-            let filtered = currentWaters;
-            if (!activeFilters.has('all')) {
-                filtered = filtered.filter(w => 
-                    Array.from(activeFilters).some(f => 
-                        w.type === f || w.region === f
-                    )
-                );
-            }
-
-            // Сортировка
-            filtered = sortWaters(filtered);
-
-            if (filtered.length === 0) {
-                container.innerHTML = '<p style="grid-column:1/-1; text-align:center;">Ничего не найдено</p>';
-            } else {
-                filtered.forEach(water => {
-                    container.appendChild(createWaterCard(water));
-                });
-            }
-        }
-
-        // Переключение фильтров с выделением
-        function toggleFilter(filter, button) {
-            const allButtons = document.querySelectorAll('.filter-btn');
-            
-            if (filter === 'all') {
-                activeFilters.clear();
-                activeFilters.add('all');
-                allButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-            } else {
-                activeFilters.delete('all');
-                document.querySelector('.filter-btn[onclick*="all"]').classList.remove('active');
-                
-                if (activeFilters.has(filter)) {
-                    activeFilters.delete(filter);
-                    button.classList.remove('active');
-                } else {
-                    activeFilters.add(filter);
-                    button.classList.add('active');
-                }
-                
-                // Если ни один фильтр не выбран, активируем "Все"
-                if (activeFilters.size === 0) {
-                    activeFilters.add('all');
-                    document.querySelector('.filter-btn[onclick*="all"]').classList.add('active');
-                }
-            }
-            renderWaters();
-        }
-
-        // Применение сортировки
-        function applySort() {
-            currentSort = document.getElementById('sortSelect').value;
-            renderWaters();
-        }
-
-        // Поиск по названию
-        document.getElementById('searchInput').addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            currentWaters = waterDatabase.filter(w => 
-                w.name.toLowerCase().includes(searchTerm) || 
-                w.description.toLowerCase().includes(searchTerm)
-            );
-            renderWaters();
-        });
-
-        // Инициализация страницы
-        document.addEventListener('DOMContentLoaded', () => {
-            // Сортировка базы данных при загрузке
-            currentWaters = sortWaters(waterDatabase);
-            renderWaters();
-        });
-    </script>
 </body>
 </html>
