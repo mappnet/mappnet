@@ -19,7 +19,7 @@
         }
         
         .header {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1452421822248-d4c2b47f0c81?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://www.baltana.com/files/wallpapers-33/Andes-Mountains-Photography-Desktop-Wallpaper-117093.jpg');
             background-size: cover;
             background-position: center;
             height: 60vh;
@@ -346,46 +346,6 @@
 
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
-        // Инициализация карты Анд
-        const map = L.map('map').setView([-32.6532, -70.0111], 4);
-        
-        // Добавление слоя OpenStreetMap
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-        
-        // Добавление примерных границ Анд
-        const andesCoords = [
-            [-10.8, -75.2], [-13.0, -72.5], [-15.5, -70.0],
-            [-18.0, -69.0], [-20.5, -68.5], [-23.0, -67.5],
-            [-25.5, -68.5], [-28.0, -69.5], [-30.5, -70.0],
-            [-33.0, -70.0], [-35.5, -70.5], [-38.0, -71.0],
-            [-40.5, -71.5], [-43.0, -71.5], [-45.5, -72.0],
-            [-48.0, -72.5], [-50.5, -73.0], [-53.0, -72.0]
-        ];
-        
-        L.polyline(andesCoords, {
-            color: '#2c3e50',
-            weight: 3,
-            fillColor: '#3498db',
-            fillOpacity: 0.3
-        }).addTo(map).bindPopup("Горная система Анд");
-        
-        // Маркеры для вершин
-        const peaks = [
-            {name: "Аконкагуа", coords: [-32.6532, -70.0111], height: "6961 м"},
-            {name: "Охос-дель-Саладо", coords: [-27.1082, -68.5417], height: "6893 м"},
-            {name: "Уаскаран", coords: [-9.1219, -77.6044], height: "6768 м"},
-            {name: "Сахама", coords: [-18.1056, -68.8808], height: "6542 м"},
-            {name: "Чимборасо", coords: [-1.4692, -78.8167], height: "6263 м"}
-        ];
-        
-        peaks.forEach(peak => {
-            L.marker(peak.coords)
-                .addTo(map)
-                .bindPopup(`<b>${peak.name}</b><br>Высота: ${peak.height}`);
-        });
-
         // Скрипт для открытия изображения в полном размере
         document.addEventListener('DOMContentLoaded', function() {
             const modal = document.getElementById("imageModal");
