@@ -331,84 +331,38 @@
 
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
-        // Инициализация карты
-        const map = L.map('map').setView([27.9881, 86.9250], 6);
-        
-        // Добавление слоя OpenStreetMap
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-        
-        // Добавление границ Гималаев (примерные координаты)
-        const himalayasCoords = [
-            [28.5, 81.0], [28.0, 82.0], [27.5, 83.0], 
-            [27.0, 84.0], [27.5, 85.0], [28.0, 86.0],
-            [28.5, 87.0], [29.0, 88.0], [29.5, 89.0],
-            [30.0, 90.0], [30.5, 91.0], [30.0, 92.0],
-            [29.5, 93.0], [29.0, 94.0], [28.5, 95.0]
-        ];
-        
-        L.polygon([himalayasCoords], {
-            color: '#2c3e50',
-            weight: 2,
-            fillColor: '#3498db',
-            fillOpacity: 0.3
-        }).addTo(map).bindPopup("Гималаи");
-        
-        // Маркеры для вершин
-        const peaks = [
-            {name: "Эверест", coords: [27.9881, 86.9250], height: "8848 м"},
-            {name: "Канченджанга", coords: [27.7025, 88.1475], height: "8586 м"},
-            {name: "Лхоцзе", coords: [27.9617, 86.9336], height: "8516 м"},
-            {name: "Макалу", coords: [27.8897, 87.0886], height: "8485 м"},
-            {name: "Чо-Ойю", coords: [28.0944, 86.6608], height: "8188 м"}
-        ];
-        
-        peaks.forEach(peak => {
-            L.marker(peak.coords)
-                .addTo(map)
-                .bindPopup(`<b>${peak.name}</b><br>Высота: ${peak.height}`);
-        });
-
         // Скрипт для открытия изображения в полном размере
-        const modal = document.getElementById("imageModal");
-        const modalImg = document.getElementById("fullSizeImage");
-        const mapImage = document.getElementById("map-image");
-        const closeBtn = document.getElementsByClassName("close")[0];
-
-        // Функционал для модального изображения
         document.addEventListener('DOMContentLoaded', function() {
-            // Получаем все изображения с классом zoomable-image
-            const images = document.querySelectorAll('.zoomable-image');
-            const modal = document.getElementById('imageModal');
-            const modalImg = document.getElementById('modalImage');
-            const closeBtn = document.querySelector('.close');
+            const modal = document.getElementById("imageModal");
+            const modalImg = document.getElementById("fullSizeImage");
+            const closeBtn = document.querySelector(".close");
+            const images = document.querySelectorAll(".zoomable-image");
             
-            // Добавляем обработчик для каждого изображения
+            // Открытие модального окна при клике на изображение
             images.forEach(img => {
                 img.addEventListener('click', function() {
-                    modal.style.display = 'block';
+                    modal.style.display = "block";
                     modalImg.src = this.src;
                     modalImg.alt = this.alt;
                 });
             });
             
-            // Закрытие по крестику
+            // Закрытие модального окна
             closeBtn.addEventListener('click', function() {
-                modal.style.display = 'none';
+                modal.style.display = "none";
             });
             
-            // Закрытие по клику вне изображения
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    modal.style.display = 'none';
+            // Закрытие при клике вне изображения
+            window.addEventListener('click', function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
                 }
             });
             
             // Закрытие по ESC
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && modal.style.display === 'block') {
-                    modal.style.display = 'none';
+            document.addEventListener('keydown', function(event) {
+                if (event.key === "Escape" && modal.style.display === "block") {
+                    modal.style.display = "none";
                 }
             });
         });
