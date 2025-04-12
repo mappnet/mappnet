@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кавказ - Подробная информация</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://priroda.club/uploads/posts/2021-12/1639170810_53-priroda-club-p-dombai-elbrus-priroda-krasivo-foto-58.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        
+        #map {
+            height: 500px;
+            width: 100%;
+            margin: 30px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .section {
+            margin: 40px 0;
+        }
+        
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            border-bottom: 2px solid #e74c3c;
+            padding-bottom: 10px;
+        }
+        
+        .countries-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .country-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .country-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .country-card img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .peaks-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .peaks-table th, .peaks-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .peaks-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        .peaks-table tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .highlight-peak {
+            background-color: #fff3cd !important;
+            font-weight: bold;
+        }
+        
+        .description {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            line-height: 1.8;
+        }
+        
+        .description p {
+            margin-bottom: 15px;
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .gallery img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        
+        .gallery img:hover {
+            transform: scale(1.03);
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+
+        /* Стили для модального окна */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            overflow: auto;
+        }
+
+        .modal-content {
+            display: block;
+            margin: auto;
+            max-width: 90%;
+            max-height: 90%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .countries-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            #map {
+                height: 300px;
+            }
+
+            .modal-content {
+                max-width: 95%;
+                max-height: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Кавказ</h1>
+        <p>Горная система между Чёрным и Каспийским морями</p>
+    </div>
+    
+    <div class="container">
+        
+        <div class="section">
+            <h2>Страны, где расположен Кавказ</h2>
+            <div class="countries-grid">
+                <div class="country-card">
+                    <img src="https://flagcdn.com/w320/ru.png" alt="Россия">
+                    <h3>Россия</h3>
+                    <p>Северный Кавказ</p>
+                </div>
+                <div class="country-card">
+                    <img src="https://flagcdn.com/w320/ge.png" alt="Грузия">
+                    <h3>Грузия</h3>
+                    <p>Центральный Кавказ</p>
+                </div>
+                <div class="country-card">
+                    <img src="https://flagcdn.com/w320/az.png" alt="Азербайджан">
+                    <h3>Азербайджан</h3>
+                    <p>Восточный Кавказ</p>
+                </div>
+                <div class="country-card">
+                    <img src="https://flagcdn.com/w320/am.png" alt="Армения">
+                    <h3>Армения</h3>
+                    <p>Южный Кавказ</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Высочайшие вершины</h2>
+            <table class="peaks-table">
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Высота</th>
+                        <th>Страна</th>
+                        <th>Первое восхождение</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="highlight-peak">
+                        <td>Эльбрус</td>
+                        <td>5642 м</td>
+                        <td>Россия</td>
+                        <td>1829 (Килар Хаширов)</td>
+                    </tr>
+                    <tr>
+                        <td>Дыхтау</td>
+                        <td>5205 м</td>
+                        <td>Россия</td>
+                        <td>1888</td>
+                    </tr>
+                    <tr>
+                        <td>Шхара</td>
+                        <td>5193 м</td>
+                        <td>Грузия/Россия</td>
+                        <td>1888</td>
+                    </tr>
+                    <tr>
+                        <td>Коштантау</td>
+                        <td>5152 м</td>
+                        <td>Россия</td>
+                        <td>1889</td>
+                    </tr>
+                    <tr>
+                        <td>Пик Пушкина</td>
+                        <td>5100 м</td>
+                        <td>Россия/Грузия</td>
+                        <td>1937</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2>О Кавказе</h2>
+            <div class="description">
+                <p>Кавказ — горная система между Чёрным и Каспийским морями, разделяющая Европу и Азию. Состоит из Большого Кавказа (протяжённость около 1200 км) и Малого Кавказа.</p>
+                
+                <p>Кавказские горы образовались около 25 млн лет назад в результате столкновения Аравийской и Евразийской плит. Горообразование продолжается и сегодня — горы растут со скоростью несколько сантиметров в столетие.</p>
+                
+                <p>Кавказ — это более 2000 ледников общей площадью около 1400 км². Здесь берут начало такие реки как Кубань, Терек, Кура, Аракс и другие.</p>
+                
+                <p>Климат на Кавказе разнообразен: от влажных субтропиков на черноморском побережье до суровых высокогорных условий с вечными снегами и ледниками.</p>
+                
+                <p>Кавказ известен своим этническим и языковым разнообразием — здесь проживают более 50 народов, говорящих на языках кавказской, индоевропейской и алтайской семей.</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Фотографии Кавказа</h2>
+            <div class="gallery">
+                <img src="https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_6654fc6939a95a7f975b591c_665bc0f4b995d30d5bbe1348/scale_1200" alt="Кавказские горы" class="zoomable-image">
+                <img src="https://i.pinimg.com/originals/21/25/ea/2125eaffe2c645fe0fa0e06b06f40b6c.jpg" alt="Ландшафты Кавказа" class="zoomable-image">
+                <img src="https://img-fotki.yandex.ru/get/9515/3821868.173/0_bf466_5df5709b_orig.jpg" alt="Природа Кавказа" class="zoomable-image">
+            </div>
+        </div>
+    </div>
+    
+    <!-- Модальное окно для полноразмерного изображения -->
+    <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="fullSizeImage">
+    </div>
+    
+    <footer>
+        <p>© MapCatalog | Все права защищены</p>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Скрипт для открытия изображения в полном размере
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById("imageModal");
+            const modalImg = document.getElementById("fullSizeImage");
+            const closeBtn = document.querySelector(".close");
+            const images = document.querySelectorAll(".zoomable-image");
+            
+            // Открытие модального окна при клике на изображение
+            images.forEach(img => {
+                img.addEventListener('click', function() {
+                    modal.style.display = "block";
+                    modalImg.src = this.src;
+                    modalImg.alt = this.alt;
+                });
+            });
+            
+            // Закрытие модального окна
+            closeBtn.addEventListener('click', function() {
+                modal.style.display = "none";
+            });
+            
+            // Закрытие при клике вне изображения
+            window.addEventListener('click', function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            });
+            
+            // Закрытие по ESC
+            document.addEventListener('keydown', function(event) {
+                if (event.key === "Escape" && modal.style.display === "block") {
+                    modal.style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
