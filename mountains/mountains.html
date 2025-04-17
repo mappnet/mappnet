@@ -543,7 +543,7 @@
                         <span title="Протяженность">📏 ${mountain.length} км</span>
                     </div>
                     <p class="mountain-description">${mountain.description}</p>
-                    <button class="detail-btn" onclick="navigateToDetail('mountains/${mountain.slug || mountain.id}')">Подробнее</button>
+                    <button class="detail-btn" onclick="navigateToDetail('${mountain.slug || mountain.id}')">Подробнее</button>
                 </div>
             `;
             return card;
