@@ -46,6 +46,20 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
+        .back-link {
+            display: inline-block;
+            margin-top: 1rem;
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: var(--accent-color);
+            transform: translateX(-5px);
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -209,11 +223,40 @@
                 margin-top: 10px;
             }
         }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-to-top:hover {
+            background: #555;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
     </style>
 </head>
 <body>
     <header>
         <h1>Горные системы мира</h1>
+        <a href="../index.html" class="back-link">← Вернуться</a>
     </header>
 
     <div class="container">
@@ -651,6 +694,29 @@
         function navigateToDetail(mountainId) {
             window.location.href = `${mountainId}.html`;
         }
+    
+        document.addEventListener('DOMContentLoaded', () => {
+        const backToTopBtn = document.getElementById('back-to-top');
+        
+        // Показываем/скрываем кнопку при прокрутке
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+            backToTopBtn.classList.add('visible');
+            } else {
+            backToTopBtn.classList.remove('visible');
+            }
+        });
+        
+        // Плавная прокрутка при клике
+        backToTopBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+            });
+        });
+        });
     </script>
+    <button id="back-to-top" class="back-to-top" title="Наверх">↑</button>
 </body>
 </html>
