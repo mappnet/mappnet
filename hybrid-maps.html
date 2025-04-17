@@ -594,7 +594,7 @@
             }
 
             const btn = [...document.querySelectorAll('.filter-btn')]
-                .find(b => b.textContent === category); // Исправлено сравнение
+                .find(b => b.textContent === category);
             if (btn) btn.classList.toggle('active');
 
             if (activeFilters.size === 0) {
