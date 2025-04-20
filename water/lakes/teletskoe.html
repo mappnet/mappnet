@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Телецкое озеро - подробная информация</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --water-color: #1e88e5;
+            --text-light: #ecf0f1;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Georgia', serif;
+        }
+        body {
+            background-color: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+        header {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                        url('https://altai-photo.ru/wp-content/uploads/2019/11/ozero-teletskoe-1.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 4rem 1rem;
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .lake-info {
+            display: flex;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+        .lake-image {
+            flex: 1;
+            min-width: 300px;
+        }
+        .lake-image img {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .lake-details {
+            flex: 1;
+            min-width: 300px;
+        }
+        .facts-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+        }
+        .facts-table th, .facts-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .facts-table th {
+            background-color: #f8f9fa;
+            width: 30%;
+        }
+        .section-title {
+            font-size: 2rem;
+            margin: 2rem 0 1rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--water-color);
+            padding-bottom: 0.5rem;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: var(--primary-color);
+            color: white;
+            margin-top: 3rem;
+        }
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--water-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Телецкое озеро</h1>
+        <p>Жемчужина Алтая и второе по глубине озеро России</p>
+    </header>
+
+    <div class="container">
+        <div class="lake-info">
+            <div class="lake-image">
+                <img src="https://altai-photo.ru/wp-content/uploads/2019/11/ozero-teletskoe-1.jpg" alt="Телецкое озеро">
+            </div>
+            <div class="lake-details">
+                <p>Телецкое озеро - одно из самых глубоких и живописных озёр России, расположенное на северо-востоке Алтайских гор. Местные жители называют его "Алтын-Кёль" - "Золотое озеро". Озеро включено в список Всемирного наследия ЮНЕСКО как часть объекта "Золотые горы Алтая".</p>
+                
+                <table class="facts-table">
+                    <tr>
+                        <th>Площадь</th>
+                        <td>223 км²</td>
+                    </tr>
+                    <tr>
+                        <th>Объём</th>
+                        <td>40 км³</td>
+                    </tr>
+                    <tr>
+                        <th>Максимальная глубина</th>
+                        <td>325 м</td>
+                    </tr>
+                    <tr>
+                        <th>Средняя глубина</th>
+                        <td>174 м</td>
+                    </tr>
+                    <tr>
+                        <th>Длина</th>
+                        <td>77,8 км</td>
+                    </tr>
+                    <tr>
+                        <th>Ширина</th>
+                        <td>5,2 км</td>
+                    </tr>
+                    <tr>
+                        <th>Высота над уровнем моря</th>
+                        <td>434 м</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <h2 class="section-title">География и природа</h2>
+        <p>Телецкое озеро расположено в Турочакском и Улаганском районах Республики Алтай. В озеро впадает около 70 рек и 150 временных водотоков, крупнейшая из них - Чулышман. Вытекает только одна река - Бия. Озеро окружено горными хребтами высотой до 2500 м.</p>
+        <p>Вода в озере очень чистая, прозрачность достигает 14 метров. В озере обитает 14 видов рыб, включая тайменя, телецкого сига, хариуса. На берегах расположен Алтайский государственный природный заповедник.</p>
+
+        <h2 class="section-title">Климат</h2>
+        <p>Климат в районе озера континентальный. Зимой озеро замерзает только у берегов, центральная часть из-за большой глубины не замерзает. Летом вода прогревается только в верхних слоях, средняя температура воды в июле +10°C.</p>
+
+        <h2 class="section-title">Туризм</h2>
+        <p>Основные туристические центры - сёла Артыбаш и Иогач. Популярны водные экскурсии по озеру, посещение водопада Корбу, Каменного залива, дельты Чулышмана. Развит экологический туризм, рыбалка, рафтинг по вытекающей реке Бия.</p>
+
+        <a href="lakes.html" class="back-btn">← Вернуться к списку озёр</a>
+    </div>
+
+    <footer>
+        <p>&copy; Географический каталог | Все права защищены</p>
+    </footer>
+</body>
+</html>
