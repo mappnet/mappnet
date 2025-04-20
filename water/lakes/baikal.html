@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Озеро Байкал - подробная информация</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --water-color: #1e88e5;
+            --text-light: #ecf0f1;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Georgia', serif;
+        }
+        body {
+            background-color: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+        header {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                        url('https://images.unsplash.com/photo-1574786577759-aebe3a095357');
+            background-size: cover;
+            background-position: center;
+            padding: 4rem 1rem;
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .lake-info {
+            display: flex;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+        .lake-image {
+            flex: 1;
+            min-width: 300px;
+        }
+        .lake-image img {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .lake-details {
+            flex: 1;
+            min-width: 300px;
+        }
+        .facts-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+        }
+        .facts-table th, .facts-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .facts-table th {
+            background-color: #f8f9fa;
+            width: 30%;
+        }
+        .section-title {
+            font-size: 2rem;
+            margin: 2rem 0 1rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--water-color);
+            padding-bottom: 0.5rem;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: var(--primary-color);
+            color: white;
+            margin-top: 3rem;
+        }
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--water-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Озеро Байкал</h1>
+        <p>Самое глубокое и древнее озеро на планете</p>
+    </header>
+
+    <div class="container">
+        <div class="lake-info">
+            <div class="lake-image">
+                <img src="https://images.unsplash.com/photo-1574786577759-aebe3a095357" alt="Озеро Байкал">
+            </div>
+            <div class="lake-details">
+                <p>Байкал - самое глубокое озеро на Земле (1642 м) и крупнейший природный резервуар пресной воды. Содержит около 20% мировых запасов пресной воды. Возраст озера оценивается в 25-35 миллионов лет, что делает его самым древним озером в мире.</p>
+                
+                <table class="facts-table">
+                    <tr>
+                        <th>Площадь</th>
+                        <td>31 722 км²</td>
+                    </tr>
+                    <tr>
+                        <th>Объём</th>
+                        <td>23 615 км³</td>
+                    </tr>
+                    <tr>
+                        <th>Максимальная глубина</th>
+                        <td>1642 м</td>
+                    </tr>
+                    <tr>
+                        <th>Средняя глубина</th>
+                        <td>744 м</td>
+                    </tr>
+                    <tr>
+                        <th>Длина</th>
+                        <td>636 км</td>
+                    </tr>
+                    <tr>
+                        <th>Ширина</th>
+                        <td>79 км</td>
+                    </tr>
+                    <tr>
+                        <th>Высота над уровнем моря</th>
+                        <td>456 м</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <h2 class="section-title">География и природа</h2>
+        <p>Байкал находится в центре Азии на границе Иркутской области и Республики Бурятия. Озеро имеет тектоническое происхождение - оно расположено в рифтовой впадине. В Байкал впадает 336 рек и ручьёв, а вытекает только одна - Ангара.</p>
+        <p>Вода в Байкале исключительно чистая и прозрачная - в некоторые периоды прозрачность достигает 40 метров. Озеро является домом для более чем 1700 видов растений и животных, две трети которых являются эндемиками (встречаются только в Байкале).</p>
+
+        <h2 class="section-title">Климат</h2>
+        <p>Климат в районе Байкала резко континентальный. Зимы холодные (средняя температура января -20°C), но благодаря огромной массе воды озеро замерзает только в январе. Лето прохладное, с частыми туманами.</p>
+
+        <h2 class="section-title">Экология и охрана</h2>
+        <p>В 1996 году Байкал был включён в список Всемирного наследия ЮНЕСКО. На берегах озера созданы 3 заповедника и 2 национальных парка. Основные экологические проблемы связаны с деятельностью Байкальского целлюлозно-бумажного комбината и увеличивающимся потоком туристов.</p>
+
+        <h2 class="section-title">Туризм</h2>
+        <p>Основные туристические центры - Листвянка, Слюдянка, остров Ольхон. Популярные виды туризма: пешие походы, круизы по озеру, зимние экскурсии по льду Байкала, дайвинг. Особой популярностью пользуется Кругобайкальская железная дорога - памятник инженерного искусства.</p>
+
+        <a href="lakes.html" class="back-btn">← Вернуться к списку озёр</a>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 Водные ресурсы России | Все права защищены</p>
+    </footer>
+</body>
+</html>
