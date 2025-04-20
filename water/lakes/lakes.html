@@ -178,6 +178,9 @@
             text-decoration: none;
             border-radius: 4px;
             transition: background 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
         }
 
         .detail-btn:hover {
@@ -242,8 +245,12 @@
         <div class="water-grid" id="waterContainer"></div>
     </div>
 
+    <footer>
+        <p>&copy; 2023 Водные ресурсы России | Все права защищены</p>
+    </footer>
+
     <script>
-        // База данных рек и озёр
+        // База данных озер
         const waterDatabase = [
             {
                 id: "baikal",
@@ -337,6 +344,11 @@
             'length-desc': (a, b) => (b.length || b.depth) - (a.length || a.depth)
         };
 
+        // Переход на страницу с подробной информацией
+        function navigateToDetail(id) {
+            window.location.href = `${id}.html`;
+        }
+
         // Сортировка водоёмов
         function sortWaters(waters) {
             return [...waters].sort(sortFunctions[currentSort]);
@@ -347,12 +359,9 @@
             const card = document.createElement('div');
             card.className = 'water-card';
             
-            const isRiver = water.type === 'Река';
-            const metaFields = isRiver ? 
-                `<span title="Длина">📏 ${water.length} км</span>
-                 <span title="Площадь бассейна">🌊 ${water.basin.toLocaleString()} км²</span>` :
-                `<span title="Глубина">⏬ ${water.depth} м</span>
-                 <span title="Объём">💧 ${water.volume ? water.volume.toLocaleString() + ' км³' : 'н/д'}</span>`;
+            const metaFields = `
+                <span title="Глубина">⏬ ${water.depth} м</span>
+                <span title="Объём">💧 ${water.volume ? water.volume.toLocaleString() + ' км³' : 'н/д'}</span>`;
             
             card.innerHTML = `
                 <img src="${water.image}" alt="${water.name}" class="water-image">
@@ -364,7 +373,7 @@
                         ${metaFields}
                     </div>
                     <p class="water-description">${water.description}</p>
-                    <button class="detail-btn" onclick="navigateToDetail('${water.id}.html')">Подробнее</button>
+                    <button class="detail-btn" onclick="navigateToDetail('${water.id}')">Подробнее</button>
                 </div>
             `;
             return card;
