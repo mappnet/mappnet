@@ -140,6 +140,9 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             transition: transform 0.3s;
             border-top: 4px solid var(--water-color);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
         .water-card:hover {
@@ -155,6 +158,9 @@
 
         .water-info {
             padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .water-title {
@@ -180,8 +186,8 @@
         .water-description {
             margin-bottom: 1rem;
             color: #555;
+            flex-grow: 1;    
         }
-
         .detail-btn {
             display: inline-block;
             padding: 8px 16px;
@@ -190,6 +196,8 @@
             text-decoration: none;
             border-radius: 4px;
             transition: background 0.3s;
+            margin-top: auto;
+            align-self: flex-start;
         }
 
         .detail-btn:hover {
