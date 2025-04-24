@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../image/icon.png" type="image/x-icon">
+    <title>Река Енисей - Подробная информация</title>
+    <style>
+        /* Стили такие же, как в шаблоне, включая .header, .container, .section и т.д. */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6;
+        }
+        .back-button {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 10px 20px;
+            background-color: #1e88e5;
+            color: white;
+            font-size: 1rem;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .header {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://upload.wikimedia.org/wikipedia/commons/d/db/Yenisei_River_in_Khakassia.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+        }
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h2 {
+            color: #2c3e50;
+            margin-top: 40px;
+            border-bottom: 2px solid #1e88e5;
+            padding-bottom: 10px;
+        }
+        .description p {
+            margin-bottom: 15px;
+        }
+        .country-card img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .countries-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .country-card {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .river-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .river-table th, .river-table td {
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Река Енисей</h1>
+        <p>Одна из крупнейших рек России и мира, важнейшая водная артерия Сибири</p>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2>Расположение</h2>
+            <div class="countries-grid">
+                <div class="country-card">
+                    <img src="https://flagcdn.com/w320/ru.png" alt="Россия">
+                    <h3>Россия</h3>
+                    <p>Сибирь</p>
+                </div>
+                <div class="country-card">
+                    <img src="https://flagcdn.com/w320/mn.png" alt="Монголия">
+                    <h3>Монголия</h3>
+                    <p>Истоки в горах Хангай</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Основные характеристики</h2>
+            <table class="river-table">
+                <thead>
+                    <tr>
+                        <th>Параметр</th>
+                        <th>Значение</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Длина</td><td>3 487 км (с Малым Енисеем — 4 092 км)</td></tr>
+                    <tr><td>Площадь бассейна</td><td>2 580 000 км²</td></tr>
+                    <tr><td>Средний расход воды</td><td>19 800 м³/с</td></tr>
+                    <tr><td>Исток</td><td>Слияние Большого и Малого Енисея</td></tr>
+                    <tr><td>Устье</td><td>Карское море</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>О реке Енисей</h2>
+            <div class="description">
+                <p>Енисей — одна из крупнейших рек в мире, протекает через центральную Сибирь. Начинается в горах Тувы и впадает в Карское море.</p>
+                <p>Река судоходна, на ней расположены такие города как Красноярск, Дудинка, Минусинск, Абакан и другие. Воды Енисея используются для нужд энергетики — на реке построены Саяно-Шушенская, Красноярская и другие ГЭС.</p>
+                <p>Бассейн реки охватывает разнообразные природные зоны — от тайги до тундры. Енисей играет огромную роль в экономике, транспорте и экологии региона.</p>
+                <p>Крупнейшие притоки — Ангара, Подкаменная Тунгуска, Нижняя Тунгуска.</p>
+            </div>
+        </div>
+
+        <a href="rivers.html" class="back-button">← Вернуться к списку рек</a>
+    </div>
+
+    <footer>
+        <p>© Географический каталог | Все права защищены</p>
+    </footer>
+    <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="fullSizeImage">
+    </div>
+    <script>
+        // Скрипт для увеличения изображений в модальном окне
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById("imageModal");
+            const modalImg = document.getElementById("fullSizeImage");
+            const closeBtn = document.querySelector(".close");
+            const images = document.querySelectorAll(".zoomable-image");
+
+            images.forEach(img => {
+                img.addEventListener('click', function() {
+                    modal.style.display = "block";
+                    modalImg.src = this.src;
+                    modalImg.alt = this.alt;
+                });
+            });
+
+            closeBtn.addEventListener('click', function() {
+                modal.style.display = "none";
+            });
+
+            window.addEventListener('click', function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            });
+
+            document.addEventListener('keydown', function(event) {
+                if (event.key === "Escape" && modal.style.display === "block") {
+                    modal.style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
