@@ -265,7 +265,6 @@
 
     let activeFilters = new Set();
 
-    // Создание карточки карты
     function createMapCard(map) {
         const card = document.createElement('div');
         card.className = 'map-card';
@@ -281,7 +280,6 @@
         return card;
     }
 
-    // Функция поиска по карточкам
     function searchMaps() {
         const searchTerm = document.getElementById('searchInput').value.toLowerCase();
         const filteredMaps = mapsDatabase.filter(map => {
@@ -290,7 +288,6 @@
         renderMaps(filteredMaps);
     }
 
-    // Функция отрисовки карточек
     function renderMaps(maps = mapsDatabase) {
         const mapsGrid = document.querySelector('.maps-grid');
         mapsGrid.innerHTML = '';
@@ -312,7 +309,6 @@
         }
     }
 
-    // Функция переключения фильтров
     function toggleFilter(category) {
         const allBtn = document.querySelector('.filter-btn:not(.multiple)');
 
@@ -334,7 +330,7 @@
             }
 
             const btn = [...document.querySelectorAll('.filter-btn')]
-                .find(b => b.textContent === category); // Исправлено сравнение
+                .find(b => b.textContent === category);
             if (btn) btn.classList.toggle('active');
 
             if (activeFilters.size === 0) {
@@ -346,12 +342,10 @@
         renderMaps();
     }
 
-    // Инициализация при загрузке страницы
     document.addEventListener('DOMContentLoaded', () => {
         activeFilters.add('all');
         document.querySelector('.filter-btn:not(.multiple)').classList.add('active');
         
-        // Добавлен обработчик для поиска
         const searchInput = document.getElementById('searchInput');
         if (searchInput) {
             searchInput.addEventListener('input', searchMaps);
@@ -361,8 +355,7 @@
     
     document.addEventListener('DOMContentLoaded', () => {
         const backToTopBtn = document.getElementById('back-to-top');
-        
-        // Показываем/скрываем кнопку при прокрутке
+
         window.addEventListener('scroll', () => {
             if (window.pageYOffset > 300) {
             backToTopBtn.classList.add('visible');
@@ -370,8 +363,7 @@
             backToTopBtn.classList.remove('visible');
             }
         });
-        
-        // Плавная прокрутка при клике
+
         backToTopBtn.addEventListener('click', (e) => {
             e.preventDefault();
             window.scrollTo({
