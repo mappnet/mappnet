@@ -576,12 +576,10 @@
             }
         ];
 
-        // Переменные состояния
         let activeFilters = new Set(['all']);
         let currentMountains = [...mountainsDatabase];
         let currentSort = 'name-asc';
 
-        // Функции сортировки
         const sortFunctions = {
             'name-asc': (a, b) => a.name.localeCompare(b.name, 'ru'),
             'name-desc': (a, b) => b.name.localeCompare(a.name, 'ru'),
@@ -591,12 +589,10 @@
             'length-desc': (a, b) => b.length - a.length
         };
 
-        // Сортировка горных систем
         function sortMountains(mountains) {
             return [...mountains].sort(sortFunctions[currentSort]);
         }
 
-        // Создание карточки горной системы
         function createMountainCard(mountain) {
             const card = document.createElement('div');
             card.className = 'mountain-card';
@@ -616,18 +612,15 @@
             return card;
         }
 
-        // Фильтрация и отображение горных систем
         function renderMountains() {
             const container = document.getElementById('mountainsContainer');
             container.innerHTML = '';
 
-            // Фильтрация по континенту
             let filtered = currentMountains;
             if (!activeFilters.has('all')) {
                 filtered = filtered.filter(m => activeFilters.has(m.continent));
             }
 
-            // Сортировка
             filtered = sortMountains(filtered);
 
             if (filtered.length === 0) {
@@ -639,7 +632,6 @@
             }
         }
 
-        // Переключение фильтров с выделением
         function toggleFilter(filter, button) {
             const allButtons = document.querySelectorAll('.filter-btn');
             
@@ -659,8 +651,7 @@
                     activeFilters.add(filter);
                     button.classList.add('active');
                 }
-                
-                // Если ни один фильтр не выбран, активируем "Все"
+
                 if (activeFilters.size === 0) {
                     activeFilters.add('all');
                     document.querySelector('.filter-btn[onclick*="all"]').classList.add('active');
@@ -669,13 +660,11 @@
             renderMountains();
         }
 
-        // Применение сортировки
         function applySort() {
             currentSort = document.getElementById('sortSelect').value;
             renderMountains();
         }
 
-        // Поиск по названию
         document.getElementById('searchInput').addEventListener('input', function() {
             const searchTerm = this.value.toLowerCase();
             currentMountains = mountainsDatabase.filter(m => 
@@ -685,9 +674,7 @@
             renderMountains();
         });
 
-        // Инициализация страницы
         document.addEventListener('DOMContentLoaded', () => {
-            // Сортировка базы данных при загрузке
             currentMountains = sortMountains(mountainsDatabase);
             renderMountains();
         });
@@ -698,8 +685,7 @@
     
         document.addEventListener('DOMContentLoaded', () => {
         const backToTopBtn = document.getElementById('back-to-top');
-        
-        // Показываем/скрываем кнопку при прокрутке
+
         window.addEventListener('scroll', () => {
             if (window.pageYOffset > 300) {
             backToTopBtn.classList.add('visible');
@@ -707,8 +693,7 @@
             backToTopBtn.classList.remove('visible');
             }
         });
-        
-        // Плавная прокрутка при клике
+
         backToTopBtn.addEventListener('click', (e) => {
             e.preventDefault();
             window.scrollTo({
