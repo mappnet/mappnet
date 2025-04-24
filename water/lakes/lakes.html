@@ -345,12 +345,10 @@
             }
         ];
 
-        // Переменные состояния
         let activeFilters = new Set(['all']);
         let currentWaters = [...waterDatabase];
         let currentSort = 'name-asc';
 
-        // Функции сортировки
         const sortFunctions = {
             'name-asc': (a, b) => a.name.localeCompare(b.name, 'ru'),
             'name-desc': (a, b) => b.name.localeCompare(a.name, 'ru'),
@@ -358,17 +356,14 @@
             'length-desc': (a, b) => (b.length || b.depth) - (a.length || a.depth)
         };
 
-        // Переход на страницу с подробной информацией
         function navigateToDetail(id) {
             window.location.href = `${id}.html`;
         }
 
-        // Сортировка водоёмов
         function sortWaters(waters) {
             return [...waters].sort(sortFunctions[currentSort]);
         }
 
-        // Создание карточки водоёма
         function createWaterCard(water) {
             const card = document.createElement('div');
             card.className = 'water-card';
@@ -393,12 +388,10 @@
             return card;
         }
 
-        // Фильтрация и отображение водоёмов
         function renderWaters() {
             const container = document.getElementById('waterContainer');
             container.innerHTML = '';
 
-            // Фильтрация
             let filtered = currentWaters;
             if (!activeFilters.has('all')) {
                 filtered = filtered.filter(w => 
@@ -408,7 +401,6 @@
                 );
             }
 
-            // Сортировка
             filtered = sortWaters(filtered);
 
             if (filtered.length === 0) {
@@ -420,7 +412,6 @@
             }
         }
 
-        // Переключение фильтров с выделением
         function toggleFilter(filter, button) {
             const allButtons = document.querySelectorAll('.filter-btn');
             
@@ -441,7 +432,7 @@
                     button.classList.add('active');
                 }
                 
-                // Если ни один фильтр не выбран, активируем "Все"
+ 
                 if (activeFilters.size === 0) {
                     activeFilters.add('all');
                     document.querySelector('.filter-btn[onclick*="all"]').classList.add('active');
@@ -450,13 +441,11 @@
             renderWaters();
         }
 
-        // Применение сортировки
         function applySort() {
             currentSort = document.getElementById('sortSelect').value;
             renderWaters();
         }
 
-        // Поиск по названию
         document.getElementById('searchInput').addEventListener('input', function() {
             const searchTerm = this.value.toLowerCase();
             currentWaters = waterDatabase.filter(w => 
@@ -466,9 +455,7 @@
             renderWaters();
         });
 
-        // Инициализация страницы
         document.addEventListener('DOMContentLoaded', () => {
-            // Сортировка базы данных при загрузке
             currentWaters = sortWaters(waterDatabase);
             renderWaters();
         });
