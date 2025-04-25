@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Река Нева - Подробная информация</title>
+    <link rel="icon" href="../image/icon.png" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                        url('https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Saint_Petersburg_River_View.jpg/1280px-Saint_Petersburg_River_View.jpg') no-repeat center center;
+            background-size: cover;
+            color: white;
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .section {
+            margin: 40px 0;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: #1e88e5;
+            border-bottom: 2px solid #1e88e5;
+            margin-bottom: 20px;
+            padding-bottom: 5px;
+        }
+
+        .description {
+            background: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .description p {
+            margin-bottom: 15px;
+        }
+
+        .river-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .river-table th, .river-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ccc;
+            text-align: left;
+        }
+
+        .river-table th {
+            background-color: #f4f4f4;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: #1e88e5;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #1565c0;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Река Нева</h1>
+        <p>Одна из самых коротких, но полноводных рек Европы, символ Санкт-Петербурга</p>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2>Основные характеристики</h2>
+            <table class="river-table">
+                <thead>
+                    <tr>
+                        <th>Параметр</th>
+                        <th>Значение</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Длина</td>
+                        <td>74 км</td>
+                    </tr>
+                    <tr>
+                        <td>Площадь бассейна</td>
+                        <td>281 000 км²</td>
+                    </tr>
+                    <tr>
+                        <td>Средний расход воды</td>
+                        <td>2 500 м³/с</td>
+                    </tr>
+                    <tr>
+                        <td>Исток</td>
+                        <td>Ладожское озеро</td>
+                    </tr>
+                    <tr>
+                        <td>Устье</td>
+                        <td>Финский залив (Балтийское море)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Описание</h2>
+            <div class="description">
+                <p>Нева — короткая, но одна из самых полноводных рек России и Европы. Протекает по территории Ленинградской области и Санкт-Петербурга. Берёт начало в Ладожском озере и впадает в Финский залив Балтийского моря.</p>
+
+                <p>Река имеет огромное историческое, культурное и транспортное значение. Через неё проходит Волго-Балтийский водный путь, а её берега украшают памятники архитектуры Санкт-Петербурга: Эрмитаж, Петропавловская крепость, Адмиралтейство.</p>
+
+                <p>Река судоходна по всей длине. На ней построены водорегулирующие сооружения, включая Преградительную дамбу, предотвращающую наводнения в Санкт-Петербурге.</p>
+
+                <p>Основные притоки — Тосна, Ижора, Охта и Славянка. Несмотря на короткую длину, Нева имеет большое значение для экономики Северо-Запада России.</p>
+            </div>
+        </div>
+
+        <a href="rivers.html" class="back-button">← Вернуться к списку рек</a>
+    </div>
+
+    <footer>
+        <p>© Географический каталог | Все права защищены</p>
+    </footer>
+
+    <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="fullSizeImage">
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById("imageModal");
+            const modalImg = document.getElementById("fullSizeImage");
+            const closeBtn = document.querySelector(".close");
+            const images = document.querySelectorAll(".zoomable-image");
+
+            images.forEach(img => {
+                img.addEventListener('click', function() {
+                    modal.style.display = "block";
+                    modalImg.src = this.src;
+                    modalImg.alt = this.alt;
+                });
+            });
+
+            closeBtn.addEventListener('click', function() {
+                modal.style.display = "none";
+            });
+
+            window.addEventListener('click', function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            });
+
+            document.addEventListener('keydown', function(event) {
+                if (event.key === "Escape" && modal.style.display === "block") {
+                    modal.style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
