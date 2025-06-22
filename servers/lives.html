@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ползунок с ограничениями</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: transparent;
+        }
+
+        .container {
+            text-align: center;
+            width: 200px;
+        }
+
+        .input-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .input {
+            width: 70px;
+            padding: 5px;
+            text-align: center;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .dash {
+            align-self: center;
+            font-size: 18px;
+        }
+
+        .slider {
+            width: 200px;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 8px;
+            background: #ddd;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #007BFF;
+            cursor: pointer;
+        }
+
+        .output {
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="input-container">
+        <input type="number" id="minInput" class="input" value="1" min="1" max="1000">
+        <span class="dash">—</span>
+        <input type="number" id="maxInput" class="input" value="1000" min="1" max="1000">
+    </div>
+    <input type="range" id="slider" class="slider" min="1" max="1000" value="1">
+    <div class="output">
+        <span id="sliderValue">1</span>
+    </div>
+</div>
+
+<script>
+    const minInput = document.getElementById('minInput');
+    const maxInput = document.getElementById('maxInput');
+    const slider = document.getElementById('slider');
+    const sliderValue = document.getElementById('sliderValue');
+
+    // Функция для обновления положения ползунка
+    function updateSlider() {
+        let min = parseInt(minInput.value) || 1; // Минимальное значение теперь всегда 1
+        let max = parseInt(maxInput.value) || 1000;
+
+        if (min >= max) return;
+
+        slider.min = min;
+        slider.max = max;
+        slider.value = Math.min(slider.value, max); // Ограничиваем значение ползунка
+        slider.value = Math.max(slider.value, min); // Ограничиваем значение ползунка
+
+        sliderValue.textContent = slider.value;
+    }
+
+    // Функция для проверки и корректировки значений в полях ввода
+    function validateInput(inputElement, isMin) {
+        let value = inputElement.value.trim();
+
+        // Проверяем, чтобы значение не было пустым
+        if (value === "") {
+            inputElement.value = 1;
+            value = 1;
+        }
+
+        // Убираем ведущие нули
+        if (value.startsWith("0") && value.length > 1) {
+            inputElement.value = value.replace(/^0+/, '');
+            value = inputElement.value;
+        }
+
+        // Ограничиваем значение до 4 цифр
+        if (value.length > 4) {
+            inputElement.value = value.slice(0, 4);
+            value = inputElement.value;
+        }
+
+        // Проверка на отрицательные числа
+        if (value < 1) {
+            inputElement.value = 1; // Минимальное значение всегда 1
+            value = 1;
+        }
+
+        // Проверка на превышение максимального значения
+        if (value > 1000) {
+            inputElement.value = 1000;
+            value = 1000;
+        }
+
+        // Для минимального значения
+        if (isMin) {
+            if (value >= parseInt(maxInput.value) || value < 1) { // Минимальное значение всегда 1
+                inputElement.value = 1;
+                value = 1;
+            }
+        } else { // Для максимального значения
+            if (value <= parseInt(minInput.value) || value > 1000) {
+                inputElement.value = Math.min(parseInt(minInput.value) + 1, 1000);
+                value = parseInt(minInput.value) + 1;
+            }
+        }
+
+        return value;
+    }
+
+    // Запретить ввод "+" и других нецелых чисел
+    function handleInvalidInput(e) {
+        const validValue = e.target.value.replace(/[^\d]/g, ''); // Убираем все символы кроме цифр
+        e.target.value = validValue;
+    }
+
+    // Обработчики для полей ввода
+    minInput.addEventListener('input', () => {
+        let min = validateInput(minInput, true);
+        let max = parseInt(maxInput.value) || 1000;
+
+        if (min >= max) {
+            minInput.value = max - 1; // если минимальное значение больше или равно максимальному, устанавливаем минимальное значение на 1 меньше максимального
+        }
+        updateSlider();
+    });
+
+    maxInput.addEventListener('input', () => {
+        let min = parseInt(minInput.value) || 1; // Минимальное значение теперь всегда 1
+        let max = validateInput(maxInput, false);
+
+        if (max <= min) {
+            maxInput.value = min + 1; // если максимальное значение меньше или равно минимальному, устанавливаем максимальное значение на 1 больше минимального
+        }
+        updateSlider();
+    });
+
+    // Обработчик для ползунка
+    slider.addEventListener('input', () => {
+        sliderValue.textContent = slider.value;
+        updateSlider();
+    });
+
+    // Добавляем обработчики для запрещения ввода символа "+"
+    minInput.addEventListener('input', handleInvalidInput);
+    maxInput.addEventListener('input', handleInvalidInput);
+
+    // Сброс на 1, если поле пустое после потери фокуса
+    function handleBlur(inputElement) {
+        if (inputElement.value === "") {
+            inputElement.value = 1;
+        }
+    }
+
+    minInput.addEventListener('blur', () => handleBlur(minInput));
+    maxInput.addEventListener('blur', () => handleBlur(maxInput));
+
+    // Инициализация при загрузке
+    updateSlider();
+</script>
+
+</body>
+</html>
